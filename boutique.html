@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Catalogue - Services CNC</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <header>
+        <h1>Nos Services CNC</h1>
+        <nav>
+            <a href="index.html">Accueil</a>
+            <a href="boutique.html">Catalogue</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section class="products">
+        <h2>Nos offres</h2>
+        <div class="product-grid" id="productGrid">
+            <!-- Les produits seront affichés ici dynamiquement -->
+        </div>
+    </section>
+
+
+    <footer>
+        <p>&copy; 2024 Mon site CNC</p>
+    </footer>
+
+    <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script>
+  // Configuration Firebase
+  const firebaseConfig = {
+    apiKey: "VOTRE_API_KEY",
+    authDomain: "VOTRE_AUTH_DOMAIN",
+    projectId: "VOTRE_PROJECT_ID",
+    storageBucket: "VOTRE_STORAGE_BUCKET",
+    messagingSenderId: "VOTRE_SENDER_ID",
+    appId: "VOTRE_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Charger produits dynamiquement
+  const grid = document.getElementById('productGrid');
+
+  function loadProducts() {
+    firebase.firestore().collection('products').get()
+    .then(snapshot => {
+      grid.innerHTML = ''; // vider la grille
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const productDiv = document.createElement('div');
+        productDiv.className = 'product-card';
+        productDiv.innerHTML = `
+          <img src="${data.image}" class="product-image" />
+          <h3>${data.title}</h3>
+          <p>${data.price}</p>
+          <a href="product.html?product=${doc.id}" class="btn">Voir plus</a>
+        `;
+        grid.appendChild(productDiv);
+      });
+    });
+  }
+
+  loadProducts(); // charger au chargement
+</script>
+
+    <script src="script.js"></script>
+</body>
+</html>

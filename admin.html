@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin - Connexion et Gestion</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f4f4f8;
+}
+h1, h2 {
+  text-align: center;
+}
+#authSection, #gestionSection {
+  max-width: 800px;
+  margin: 0 auto;
+}
+#authSection {
+  display: block;
+}
+#gestionSection {
+  display: none;
+}
+input {
+  padding: 8px;
+  margin: 5px 0;
+  width: 100%;
+  max-width: 300px;
+}
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #0056b3;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+th, td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+
+<h1>Connexion / Gestion des produits</h1>
+
+<div id="authSection">
+  <h2>Connectez-vous</h2>
+  <input type="password" id="passwordInput" placeholder="Mot de passe" />
+  <button id="loginBtn">Se connecter</button>
+</div>
+
+<div id="gestionSection">
+  <h2>Gestion des produits</h2>
+  <!-- Formulaire ajout -->
+  <form id="productAddForm">
+    <input type="text" id="newTitle" placeholder="Titre" required />
+    <input type="text" id="newPrice" placeholder="Prix" required />
+    <input type="text" id="newImage" placeholder="URL Image" required />
+    <button type="submit">Ajouter un produit</button>
+  </form>
+  <!-- Liste produits -->
+  <table>
+    <thead>
+      <tr>
+        <th>Titre</th>
+        <th>Prix</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="productsTable"></tbody>
+  </table>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script>
+  // Configure Firebase
+  const firebaseConfig = {
+    apiKey: "VOTRE_API_KEY",
+    authDomain: "VOTRE_AUTH_DOMAIN",
+    projectId: "VOTRE_PROJECT_ID",
+    storageBucket: "VOTRE_STORAGE_BUCKET",
+    messagingSenderId: "VOTRE_SENDER_ID",
+    appId: "VOTRE_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const passwordCorrect = "admin123"; // Changez ce mot de passe
+
+  const authSection = document.getElementById('authSection');
+  const gestionSection = document.getElementById('gestionSection');
+
+  document.getElementById('loginBtn').onclick = () => {
+    const pw = document.getElementById('passwordInput').value;
+    if (pw === passwordCorrect) {
+      authSection.style.display = 'none';
+      gestionSection.style.display = 'block';
+      loadProducts();
+    } else {
+      alert('Mot de passe incorrect');
+    }
+  };
+
+  // Charger produits
+function loadProducts() {
+  firebase.firestore().collection('products').get()
+  .then(snapshot => {
+    const tbody = document.getElementById('productsTable');
+    tbody.innerHTML = '';
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td contenteditable="true" onblur="updateProduct('${doc.id}', 'title', this.innerText)">${data.title}</td>
+        <td contenteditable="true" onblur="updateProduct('${doc.id}', 'price', this.innerText)">${data.price}</td>
+        <td><img src="${data.image}" width="50" /></td>
+        <td><button onclick="deleteProduct('${doc.id}')">Supprimer</button></td>
+      `;
+      tbody.appendChild(row);
+    });
+  });
+}
+
+// Ajouter un produit
+document.getElementById('productAddForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const title = document.getElementById('newTitle').value;
+  const price = document.getElementById('newPrice').value;
+  const image = document.getElementById('newImage').value;
+  firebase.firestore().collection('products').add({ title, price, image })
+  .then(() => {
+    alert('Produit ajouté');
+    document.getElementById('productAddForm').reset();
+    loadProducts();
+  });
+});
+
+// Supprimer un produit
+function deleteProduct(id) {
+  if (confirm('Supprimer ce produit ?')) {
+    firebase.firestore().collection('products').doc(id).delete().then(() => {
+      alert('Produit supprimé');
+      loadProducts();
+    });
+  }
+}
+
+// Modifier un champ
+function updateProduct(id, field, value) {
+  firebase.firestore().collection('products').doc(id).update({ [field]: value });
+}
+</script>
+
+</body>
+</html>

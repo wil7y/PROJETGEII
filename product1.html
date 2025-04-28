@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Détails du service CNC</title>
+<link rel="stylesheet" href="styles.css" />
+<!-- Firebase SDK -->
+</head>
+<body>
+    
+<header>
+    <h1>Détails du service CNC</h1>
+    <nav>
+        <a href="index.html">Accueil</a>
+        <a href="boutique.html">Catalogue</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+
+<section class="product-details">
+    <img src="" alt="" id="productImage" class="product-image"/>
+    <h2 id="productTitle"></h2>
+    <p id="productDescription"></p>
+    <p><strong>Prix :</strong> <span id="productPrice"></span></p>
+    
+    <h3>Demande de devis</h3>
+    <form id="devisForm" class="devis-form">
+        <label for="name">Nom :</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email :</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="message">Votre message :</label>
+        <textarea id="message" name="message" rows="4" required></textarea>
+
+        <button type="submit" class="btn">Envoyer la demande</button>
+    </form>
+</section>
+
+<footer>
+    <p>&copy; 2024 Mon site CNC</p>
+</footer>
+
+
+<!-- Firebase compat -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+    // Tableau de tous les produits (même que dans boutique.js)
+    const products = [
+        {
+            title: "Service de découpe CNC",
+            description: "Nous proposons un service de découpe CNC précis pour tous vos projets. Matériaux disponibles : bois, plastique, métal léger. Livraison rapide et devis personnalisé.",
+            price: "150 €",
+            image: "images/decoupe.jpg"
+        },
+        {
+            title: "Fraisage CNC personnalisé",
+            description: "Fraisage CNC pour pièces complexes avec précision. Matériaux variés, délais rapides.",
+            price: "200 €",
+            image: "images/fraisage.jpg"
+        },
+        {
+            title: "Gravure CNC",
+            description: "Service de gravure sur divers matériaux, idéal pour logos, plaques, etc.",
+            price: "100 €",
+            image: "images/gravure.jpg"
+        }
+        // Ajoutez d’autres produits si besoin
+    ];
+
+    // Fonction pour récupérer un paramètre URL
+    function getQueryParam(param) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(param);
+    }
+
+    // Charger le produit selon l’index passé dans l’URL
+    const productIndex = getQueryParam('product');
+
+    if (productIndex !== null && products[productIndex]) {
+        const product = products[productIndex];
+        document.getElementById('productTitle').textContent = product.title;
+        document.getElementById('productDescription').textContent = product.description;
+        document.getElementById('productPrice').textContent = product.price;
+        document.getElementById('productImage').src = product.image;
+        document.getElementById('productImage').alt = product.title;
+    } else {
+        // Si pas de paramètre ou index invalide, afficher un message
+        document.querySelector('.product-details').innerHTML = "<p>Produit non trouvé.</p>";
+    }
+
+    
+
+// Votre configuration Firebase (à remplacer par la vôtre)
+const firebaseConfig = {
+    apiKey: "AIzaSyD32v3AgCCqiJd5sKIHQ3jxWl2ShZincYo",
+    authDomain: "cncgeii.firebaseapp.com",
+    projectId: "cncgeii",
+    storageBucket: "cncgeii.firebasestorage.app",
+    messagingSenderId: "607727685711",
+    appId: "1:607727685711:web:e833379f71fc9433c61a3a",
+    measurementId: "G-37ZX957ZYP"
+  };
+  
+  
+  // Initialiser Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+</script>
+<script src="script.js"></script>
+</body>
+</html>
