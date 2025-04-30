@@ -38,12 +38,14 @@
 <div class="product-grid" id="productGrid"></div>
 </section>
 <footer>&copy; 2024 Mon site CNC</footer>
+
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script src="script.js"></script>
+
 <script>
-   // Sélectionner éléments
-const burger = document.getElementById('burgerMenu');
+
+     // Sélectionner éléments
+     const burger = document.getElementById('burgerMenu');
 const navLinks = document.getElementById('navLinks');
 
 burger.onclick = () => {
@@ -59,6 +61,7 @@ document.addEventListener('click', (e) => {
     burger.classList.remove('active');
   }
 });
+
   const firebaseConfig = {
     apiKey: "AIzaSyD32v3AgCCqiJd5sKIHQ3jxWl2ShZincYo",
     authDomain: "cncgeii.firebaseapp.com",
@@ -82,7 +85,7 @@ document.addEventListener('click', (e) => {
         const div = document.createElement('div');
         div.className = 'card';
         div.innerHTML = `
-          <img src="${data.image}" class="product-image" />
+          <img src="${data.image}" class="product-image" id="productImage" />
           <h3>${data.title}</h3>
           <p>${data.price}</p>
           <a href="product.html?product=${doc.id}" class="btn">Voir plus</a>

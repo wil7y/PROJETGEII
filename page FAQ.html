@@ -63,6 +63,26 @@
   <p>&copy; 2024 Innov' CNC - Tous droits réservés</p>
 </footer>
 <script>
+    
+     // Sélectionner éléments
+const burger = document.getElementById('burgerMenu');
+const navLinks = document.getElementById('navLinks');
+
+burger.onclick = () => {
+  navLinks.classList.toggle('open');
+  // Animation du burger (optionnel)
+  burger.classList.toggle('active');
+};
+
+// Fermer le menu si clic en dehors
+document.addEventListener('click', (e) => {
+  if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !burger.contains(e.target)) {
+    navLinks.classList.remove('open');
+    burger.classList.remove('active');
+  }
+});
+
+
     document.querySelectorAll('.question').forEach(q => {
   q.onclick = () => {
     // Fermer tous
@@ -74,6 +94,6 @@
   };
 });
 </script>
-<script src="script.js"></script>
+
 </body>
 </html>

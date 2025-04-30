@@ -93,7 +93,7 @@
 
 <section class="features fade-in">
     <!-- contenu -->
-    <div class="parallax">
+
     <div class="slider-container">
         <div class="slider">
           <img src="images/image4.jpg" alt="Réalisation 1" />
@@ -105,7 +105,7 @@
           <img src="images/image3.jpg" alt="Réalisation 3" />
         </div>
       </div>
-    </div>
+
   </section>
 
 
@@ -130,7 +130,9 @@
   </section>
   <p>&copy; 2024 Innov' CNC - Tous droits réservés</p>
 </footer>
+
 <script>
+
 document.querySelectorAll('.question h3').forEach(q => {
     q.onclick = () => {
       const p = q.nextElementSibling;
@@ -140,25 +142,27 @@ document.querySelectorAll('.question h3').forEach(q => {
 
 
 
-    function typeWriter(element, text, speed = 200) {
-      let i = 0;
-      element.innerHTML = '';
-      const interval = setInterval(() => {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-        } else {
-          clearInterval(interval);
-        }
-      }, speed);
+function typeWriter(element, text, speed = 200) {
+    let i = 0;
+    element.innerHTML = '';
+    const interval = setInterval(() => {
+    if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        i++;
+    } else {
+        clearInterval(interval);
     }
+    }, speed);
+}
     
-    // Exécuter après que le DOM est chargé
-    document.addEventListener('DOMContentLoaded', () => {
-      const el = document.querySelector('.typewriter');
-      const txt = el.getAttribute('data-text');
-      typeWriter(el, txt, 200);
-    });
+// Exécuter après que le DOM est chargé
+document.addEventListener('DOMContentLoaded', () => {
+    const el = document.querySelector('.typewriter');
+    const txt = el.getAttribute('data-text');
+    typeWriter(el, txt, 200);
+});
+
+
      // Sélectionner éléments
 const burger = document.getElementById('burgerMenu');
 const navLinks = document.getElementById('navLinks');
@@ -176,7 +180,9 @@ document.addEventListener('click', (e) => {
     burger.classList.remove('active');
   }
 });
-    firebase.analytics().logEvent('page_view', { page: window.location.pathname });
+
+
+
     
     </script>
 </body>

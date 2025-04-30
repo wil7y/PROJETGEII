@@ -33,7 +33,7 @@
 </nav>
 </header>
 <section class="product-details">
-<img src="" alt="" id="productImage" class="product-image"/>
+<img src="" alt="Produit" id="productImage" class="product-image"/>
 <h2 id="productTitle"></h2>
 <p id="productDescription"></p>
 <p><strong>Prix :</strong> <span id="productPrice"></span></p>
@@ -48,30 +48,17 @@
 <label for="message">Votre message :</label><br><br>
 <textarea id="message" rows="4" required></textarea>
 <button type="submit">Envoyer</button>
+
 </form>
 </section>
 <footer>&copy; 2024 Mon site CNC</footer>
+<script src="script.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<script src="script.js"></script>
+
 <script>
-   // Sélectionner éléments
-const burger = document.getElementById('burgerMenu');
-const navLinks = document.getElementById('navLinks');
 
-burger.onclick = () => {
-  navLinks.classList.toggle('open');
-  // Animation du burger (optionnel)
-  burger.classList.toggle('active');
-};
 
-// Fermer le menu si clic en dehors
-document.addEventListener('click', (e) => {
-  if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !burger.contains(e.target)) {
-    navLinks.classList.remove('open');
-    burger.classList.remove('active');
-  }
-});
   const firebaseConfig = {
     apiKey: "AIzaSyD32v3AgCCqiJd5sKIHQ3jxWl2ShZincYo",
     authDomain: "cncgeii.firebaseapp.com",
@@ -85,9 +72,9 @@ document.addEventListener('click', (e) => {
   const db = firebase.firestore();
 
   const products = [
-    { title: "Service de découpe CNC", description: "Description...", price: "150 €", image: "images/decoupe.jpg" },
-    { title: "Fraisage CNC", description: "Description...", price: "200 €", image: "images/fraisage.jpg" },
-    { title: "Gravure CNC", description: "Description...", price: "100 €", image: "images/gravure.jpg" }
+    { title: "Service de découpe CNC", description: "Description...", price: "150 €", image:"images/image1.jpg"},
+    { title: "Fraisage CNC", description: "Description...", price: "200 €", image: "images/image2.jpg" },
+    { title: "Gravure CNC", description: "Description...", price: "100 €", image: "images/image3.jpg" }
   ];
 
   function getQueryParam(param) {
