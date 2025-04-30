@@ -1,179 +1,745 @@
-/* Importer une police moderne */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+/* Police moderne */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 
+/* Couleurs principales */
 body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f8;
-    color: #333;
-}
-
-/* Header moderne */
-header {
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 20px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-header h1 {
-    margin: 0;
-    font-weight: 700;
-    font-size: 2em;
-    color: #222;
-}
-
-nav {
-    margin-top: 10px;
-}
-
-nav a {
-    margin: 0 15px;
-    text-decoration: none;
-    color: #555;
-    font-weight: 500;
-    transition: color 0.3s;
-}
-
-nav a:hover {
-    color: #007bff; /* couleur d'accent moderne */
-}
-
-/* Sections avec espace et card style */
-section {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-}
-
-section h2 {
-    margin-top: 0;
-    color: #222;
-    font-weight: 700;
-    font-size: 1.75em;
-    margin-bottom: 20px;
-}
-
-/* Boutons modernes */
-button, a.button {
-    background-color: #007bff;
+    background: linear-gradient(135deg, #1264b6, #86c4b7); /* dégradé chaud */
     color: #fff;
-    padding: 12px 25px;
+  }
+  
+  /* Boutons */
+  .btn {
+    background-color: #00b4d8; /* bleu vif */
+  }
+  .btn:hover {
+    background-color: #0096c7;
+  }
+  
+  /* Sections */
+  section {
+    background-color: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+/* En-tête */
+header {
+  text-align: center;
+  padding: 30px 20px;
+  position: relative;
+}
+.logo-container {
+  animation: pulse 3s infinite;
+}
+.logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+.main-title {
+  font-size: 2.5em;
+  margin-top: 15px;
+  animation: fadeInDown 2s ease-out;
+}
+nav {
+  margin-top: 20px;
+}
+.nav-link {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+.nav-link:hover {
+  color: #ffd700;
+}
+
+/* Hero section */
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+}
+.hero-title {
+  font-size: 3em;
+  margin-bottom: 20px;
+  animation: slideInLeft 2s;
+}
+.hero-text {
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+.btn {
+  background-color: #ff5722;
+  padding: 14px 30px;
+  border-radius: 30px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2em;
+  transition: background 0.3s, transform 0.2s;
+}
+.btn:hover {
+  background-color: #e64a19;
+  transform: scale(1.05);
+}
+
+/* Features */
+.features {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px 20px;
+}
+.feature {
+  background: rgba(255,255,255,0.2);
+  padding: 20px;
+  border-radius: 15px;
+  width: 250px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  animation: fadeInUp 2s;
+}
+.feature h3 {
+  margin-bottom: 10px;
+}
+
+/* CTA */
+.cta {
+  background: rgba(255,255,255,0.2);
+  text-align: center;
+  padding: 50px 20px;
+}
+footer {
+  text-align: center;
+  padding: 20px;
+  background: rgba(0,0,0,0.2);
+  margin-top: 40px;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-50px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Bannière d'informations */
+.banner-info {
+    background-color: #074ea6; /* couleur vive, énergique */
+    color: #fff;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 1.2em;
+    font-weight: 600;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  /* Slider simple */
+.slider-container {
+    overflow: hidden;
+    max-width: 100%;
+    height: 300px;
+    margin: 40px auto;
+    border-radius: 10px;
+  }
+  .slider {
+    display: flex;
+    width: calc(300px * 3);
+    animation: slide 15s infinite;
+  }
+  .slider img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+  
+  /* Animation de défilement */
+  @keyframes slide {
+    0% { transform: translateX(0); }
+    33% { transform: translateX(0); }
+    44% { transform: translateX(-100%); }
+    77% { transform: translateX(-100%); }
+    88% { transform: translateX(-200%); }
+    100% { transform: translateX(0); }
+  }
+
+  /* Exemple d’animation fade-in */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .parallax {
+    background-image: url('images/parallax.jpg');
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 400px;
+  }
+
+  .faq {
+    padding: 40px 20px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    margin-top: 40px;
+  }
+  .faq h2 {
+    margin-bottom: 20px;
+  }
+  .question {
+    margin-bottom: 15px;
+  }
+  .question h3 {
+    cursor: pointer;
+    background: rgba(255,255,255,0.2);
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.3s;
+  }
+  .question h3:hover {
+    background: rgba(255,255,255,0.4);
+  }
+  .question p {
+    display: none;
+    padding: 10px;
+  }
+
+/* Style général du formulaire */
+form#devisForm {
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 30px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+  form#devisForm:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  
+  /* Labels */
+  form#devisForm label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #fff;
+    font-size: 1.1em;
+  }
+  
+  /* Inputs et textarea */
+  form#devisForm input,
+  form#devisForm textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    background: #fff;
+    transition: all 0.3s ease;
+  }
+  form#devisForm input:focus,
+  form#devisForm textarea:focus {
+    outline: none;
+    border-color: #00b4d8;
+    box-shadow: 0 0 8px rgba(0, 180, 216, 0.3);
+    background: #f0f8ff;
+  }
+  
+  /* Bouton d’envoi */
+  form#devisForm button {
+    width: 100%;
+    padding: 14px;
     border: none;
     border-radius: 25px;
+    background-color: #00b4d8;
+    color: #fff;
+    font-size: 1.2em;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-button:hover, a.button:hover {
-    background-color: #0056b3;
+    transition: all 0.3s ease;
+  }
+  form#devisForm button:hover {
+    background-color: #0096c7;
     transform: translateY(-2px);
-}
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
+  
+  /* Ajout d’un effet d’apparition */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in {
+    opacity: 0;
+    animation: fadeInUp 1s forwards;
+  }
 
-/* Pied de page */
-footer {
-    background-color: #fff;
+
+  nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    transition: color 0.3s;
+  }
+  nav a:hover {
+    color: #ffd700;
+  }
+  /* Section catalogue */
+  .product {
+    padding: 50px 20px;
     text-align: center;
-    padding: 20px;
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-    margin-top: 40px;
-    font-size: 0.9em;
-    color: #777;
-}
-
-/* Style pour la section produits */
-.products {
-    padding: 40px 20px;
-    background-color: #f4f4f8;
-}
-
-.product-grid {
+  }
+  .section-title {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    animation: fadeInDown 1s ease-out;
+  }
+  
+  /* Grille de cartes */
+  .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-}
-
-.product-card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    gap: 30px;
+  }
+  
+  /* Cartes produits */
+  .card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-}
-
-.product-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.product-title {
-    font-size: 1.2em;
-    margin-bottom: 10px;
-    font-weight: 700;
-    color: #222;
-}
-
-.product-price {
-    font-size: 1.1em;
-    color: #007bff;
-    margin-bottom: 15px;
-}
-
-.btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
     text-align: center;
-    transition: background-color 0.3s;
+    transition: transform 0.4s, box-shadow 0.4s;
+    animation: fadeInUp 1s;
+  }
+  .card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  }
+  .card-image-container {
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  .card-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+  .card:hover .card-image {
+    transform: scale(1.1);
+  }
+  .card-title {
+    margin-top: 15px;
+    font-size: 1.4em;
+    font-weight: 700;
+  }
+  .card-price {
+    margin: 10px 0;
+    font-size: 1.2em;
+    color: #ffd700;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 30px;
+    border-radius: 30px;
+    background-color: #00b4d8;
+    color: #fff;
     text-decoration: none;
-}
+    font-weight: 600;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .btn:hover {
+    background-color: #0096c7;
+    transform: scale(1.05);
+  }
+  
+  /* Animations */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-.btn:hover {
-    background-color: #0056b3;
-}
+/* Carte moderne avec description à gauche et image à droite */
+.product-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    margin: 20px 0;
+    transition: transform 0.4s, box-shadow 0.4s;
+    animation: fadeInUp 1s;
+  }
+  .product-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+  }
+  .content {
+    display: flex;
+    width: 100%;
+  }
+  .description {
+    flex: 1;
+    padding-right: 20px;
+  }
+  .description h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+  .typewriter {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2.5em;
+    color: #2c0652;
+    white-space: pre;
+    overflow: hidden;
+    border-right: 3px solid #10044c;
+    width: 100%;
+  }
+  
+  /* Image à droite */
+  .image-container {
+    flex: 1;
+    text-align: center;
+  }
+  .image-container img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  
+  /* Animation de fade-in */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-/* Style pour le formulaire de devis */
-.devis-form {
+  /* Style pour les tableaux modernes */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+  }
+  table thead {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+    color: #fff;
+  }
+  table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+  }
+  table tbody tr {
+    transition: background 0.3s, transform 0.2s;
+  }
+  table tbody tr:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+  table tbody tr:nth-child(even) {
+    background: rgba(255,255,255,0.05);
+  }
+
+
+  /* Section contact */
+.contact-section {
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #2fa0a8 0%, #66a6ff 100%);
+    border-radius: 15px;
+    margin: 40px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    animation: fadeInUp 1s;
+  }
+  .section-title {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #fff;
+  }
+  
+  .contact-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+  }
+  
+  .contact-info, .contact-form {
+    flex: 1 1 300px;
+    background: rgba(255,255,255,0.2);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+  }
+  .contact-info h3 {
+    margin-top: 15px;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .contact-info p {
+    margin-bottom: 15px;
+  }
+  .contact-form h3 {
+    margin-bottom: 15px;
+  }
+  form input, form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-family: 'Montserrat', sans-serif;
+  }
+  form input:focus, form textarea:focus {
+    outline: none;
+    border-color: #00b4d8;
+    box-shadow: 0 0 8px rgba(0, 180, 216, 0.3);
+  }
+  .btn {
+    display: inline-block;
+    padding: 14px 30px;
+    border-radius: 30px;
+    background-color: #0b4c59;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .btn:hover {
+    background-color: #0096c7;
+    transform: scale(1.05);
+  }
+  
+  /* Animations */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section à propos */
+.about-section {
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #8007af, #032a79);
+    border-radius: 15px;
+    margin: 40px auto;
+    max-width: 1200px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    animation: fadeInUp 1s;
+  }
+  .section-title {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #fff;
+  }
+  .about-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center;
+  }
+  .about-text {
+    flex: 1 1 300px;
+    font-size: 1.2em;
+    color: #fff;
+  }
+  .about-text p {
+    margin-bottom: 15px;
+  }
+  .about-images {
+    flex: 1 1 300px;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-top: 20px;
-    max-width: 500px;
-}
+  }
+  .about-images img {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+  }
+  .about-images img:hover {
+    transform: scale(1.05);
+  }
 
-.devis-form label {
-    font-weight: 600;
-}
+  /* Style pour le menu burger */
+.burger-menu {
+    display: none; /* Caché par défaut, visible en mobile */
+    width: 30px;
+    height: 25px;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  .burger-menu .bar {
+    height: 4px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
 
-.devis-form input, .devis-form textarea {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-family: 'Roboto', sans-serif;
-}
+  /* Par défaut, cacher le menu sur grand écran */
+#navLinks {
+    display: none;
+  }
+  
+  /* Menu navigation */
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+  
+  /* Styles pour mobile */
+  @media(max-width: 768px) {
+    /* Afficher le burger */
+    .burger-menu {
+      display: flex;
+    }
+    /* Cacher le menu par défaut, le faire apparaître en overlay */
+    #navLinks {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100%;
+      width: 200px;
+      background-color: rgba(33, 141, 143, 0.9);
+      flex-direction: column;
+      align-items: center;
+      justify-content: start;
+      padding-top: 60px;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+    }
+    #navLinks.open {
+      transform: translateX(0);
+    }
+    /* Style pour les liens */
+    #navLinks a {
+      color: #fff;
+      font-size: 1.2em;
+      padding: 15px;
+      width: 100%;
+      text-align: center;
+    }
 
-.devis-form button {
-    align-self: flex-start;
-    margin-top: 10px;
-}
+    .typewriter {
+        font-size: 1.2em;
+    }
+  }
+
+
+  /* Section FAQ */
+.faq-section {
+    padding: 50px 20px;
+    background: linear-gradient(135deg, #515ef2, #4a0269);
+    border-radius: 15px;
+    margin: 40px auto;
+    max-width: 1000px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    animation: fadeInUp 1s;
+  }
+  .section-title {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+/* Réponse cachée par défaut */
+.answer {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.5s ease;
+    height: 0;
+    overflow: hidden;
+    padding: 0 20px;
+  }
+  
+  /* Réponse visible avec animation */
+  .question.active .answer {
+    opacity: 1;
+    transform: translateY(0);
+    height: auto; /* pas idéal avec transition, mais fonctionne avec max-height aussi */
+    padding: 15px 20px;
+  }
+
+  /* Animation slide down et fade in */
+@keyframes slideFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Réponse cachée */
+  .answer {
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: slideFadeIn 0.5s forwards;
+    display: none; /* on cache tout par défaut */
+  }
+  
+  /* Quand question active, on affiche et lance l'animation */
+  .question.active .answer {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    animation: slideFadeIn 0.5s forwards;
+  }
 

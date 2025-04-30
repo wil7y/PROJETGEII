@@ -1,74 +1,97 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Catalogue - Services CNC</title>
-    <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Catalogue - Services CNC</title>
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <header>
-        <h1>Nos Services CNC</h1>
-        <nav>
-            <a href="index.html">Accueil</a>
-            <a href="boutique.html">Catalogue</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
-
-    <section class="products">
-        <h2>Nos offres</h2>
-        <div class="product-grid" id="productGrid">
-            <!-- Les produits seront affichés ici dynamiquement -->
-        </div>
-    </section>
-
-
-    <footer>
-        <p>&copy; 2024 Mon site CNC</p>
-    </footer>
-
-    <!-- Firebase SDK -->
+<header>
+<h1>Nos Services CNC</h1>
+<div class="logo-container">
+  <img src="images/logo.jpg" alt="Logo Innov' CNC" class="logo" />
+</div>
+<div class="typewriter" data-text="Transformez vos idées :)"></div>
+  <!-- Bouton burger -->
+  <div class="burger-menu" id="burgerMenu">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+  <!-- Menu navigation -->
+  <nav id="navLinks" class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="boutique.html">Nos Services</a>
+    <a href="contact.html">Contact</a>
+    <a href="admin.html" >Admin</a>
+    <a href="A propos.html" >A propos</a>
+  </nav>
+<nav>
+<a href="index.html">Accueil</a>
+<a href="boutique.html">Catalogue</a>
+<a href="contact.html">Contact</a>
+</nav>
+</header>
+<section class="products">
+  <h2 class="section-title">Nos offres</h2>
+<div class="product-grid" id="productGrid"></div>
+</section>
+<footer>&copy; 2024 Mon site CNC</footer>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="script.js"></script>
 <script>
-  // Configuration Firebase
+   // Sélectionner éléments
+const burger = document.getElementById('burgerMenu');
+const navLinks = document.getElementById('navLinks');
+
+burger.onclick = () => {
+  navLinks.classList.toggle('open');
+  // Animation du burger (optionnel)
+  burger.classList.toggle('active');
+};
+
+// Fermer le menu si clic en dehors
+document.addEventListener('click', (e) => {
+  if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !burger.contains(e.target)) {
+    navLinks.classList.remove('open');
+    burger.classList.remove('active');
+  }
+});
   const firebaseConfig = {
-    apiKey: "VOTRE_API_KEY",
-    authDomain: "VOTRE_AUTH_DOMAIN",
-    projectId: "VOTRE_PROJECT_ID",
-    storageBucket: "VOTRE_STORAGE_BUCKET",
-    messagingSenderId: "VOTRE_SENDER_ID",
-    appId: "VOTRE_APP_ID"
+    apiKey: "AIzaSyD32v3AgCCqiJd5sKIHQ3jxWl2ShZincYo",
+    authDomain: "cncgeii.firebaseapp.com",
+    projectId: "cncgeii",
+    storageBucket: "cncgeii.firebasestorage.app",
+    messagingSenderId: "607727685711",
+    appId: "1:607727685711:web:e833379f71fc9433c61a3a",
+    measurementId: "G-37ZX957ZYP"
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Charger produits dynamiquement
   const grid = document.getElementById('productGrid');
 
   function loadProducts() {
     firebase.firestore().collection('products').get()
     .then(snapshot => {
-      grid.innerHTML = ''; // vider la grille
+      grid.innerHTML = '';
       snapshot.forEach(doc => {
         const data = doc.data();
-        const productDiv = document.createElement('div');
-        productDiv.className = 'product-card';
-        productDiv.innerHTML = `
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `
           <img src="${data.image}" class="product-image" />
           <h3>${data.title}</h3>
           <p>${data.price}</p>
           <a href="product.html?product=${doc.id}" class="btn">Voir plus</a>
         `;
-        grid.appendChild(productDiv);
+        grid.appendChild(div);
       });
     });
   }
-
-  loadProducts(); // charger au chargement
+  loadProducts();
 </script>
-
-    <script src="script.js"></script>
 </body>
 </html>
