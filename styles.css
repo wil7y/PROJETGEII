@@ -70,7 +70,7 @@ header {
 
 /* Section hero */
 .hero {
-  background: url("/pcb site/IMG-20250505-WA0003.jpg") no-repeat center center/cover;
+  background: url("IMG-20250505-WA0003.png") no-repeat center center/cover;
   color: #fff;
   padding: 13rem 1rem;
   text-align: center;
