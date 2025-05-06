@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Page Administrateur</title>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #eef2f3;
+  margin: 0;
+  padding: 20px;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+#auth-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+#auth-section button {
+  margin: 0 10px;
+  padding: 8px 15px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+#auth-section button:hover {
+  background-color: #0056b3;
+}
+#visites {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
+}
+h2 {
+  margin-top: 30px;
+  text-align: center;
+  color: #222;
+}
+#messages, #commandes {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  animation: pulse 4s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+  50% { box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+  100% { box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+}
+.message, .order {
+  background: #fff;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.message h3, .order h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+}
+.message p, .order p {
+  margin: 5px 0;
+}
+.message small, .order small {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+  color: #555;
+}
+button.delete-btn {
+  float: right;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: red;
+}
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">CNC Services</div>
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="catalog.html">Catalogue</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="connexion.html">Sign up/Sign in</a></li>
+      </ul>
+    </nav>
+    <!-- Menu burger pour mobile -->
+    <div class="burger" id="burger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+
+<h1>Page Administrateur</h1>
+
+<div id="auth-section">
+  <button id="btn-login">Se connecter</button>
+  <button id="btn-logout" style="display:none;">Déconnexion</button>
+</div>
+
+<div id="visites">Chargement du nombre de visiteurs...</div>
+
+<h2>Messages reçus</h2>
+<div id="messages">Chargement...</div>
+
+<h2>Commandes</h2>
+<div id="commandes">Chargement...</div>
+<script src="js/main.js"></script>
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+import { getFirestore, collection, getDocs, query, where, orderBy, deleteDoc, doc, addDoc, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+// CONFIG Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
+    authDomain: "cnc2-bca09.firebaseapp.com",
+    projectId: "cnc2-bca09",
+    storageBucket: "cnc2-bca09.firebasestorage.app",
+    messagingSenderId: "680616207738",
+    appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+    measurementId: "G-RGD9YN5HNS"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const adminEmail = "admin@example.com"; // Modifier ici
+
+// Boutons
+const btnLogin = document.getElementById('btn-login');
+const btnLogout = document.getElementById('btn-logout');
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    if (user.email === adminEmail) {
+      document.getElementById('btn-logout').style.display='inline';
+      loadVisiteurs();
+      loadMessages();
+      loadCommandes();
+    } else {
+      alert("Accès refusé. Vous n'êtes pas admin.");
+      signOut(auth);
+    }
+  } else {
+    document.getElementById('btn-logout').style.display='none';
+  }
+});
+
+document.getElementById('btn-login').onclick = () => {
+  const email = prompt("Email de l'admin :");
+  const password = prompt("Mot de passe :");
+  signInWithEmailAndPassword(auth, email, password).catch(e => alert('Erreur : ' + e.message));
+};
+
+document.getElementById('btn-logout').onclick = () => {
+  signOut(auth);
+};
+
+// Charger le nombre de visiteurs du jour
+async function loadVisiteurs() {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() +1);
+  const q = query(collection(db, 'visites'), where('date', '>=', today), where('date', '<', tomorrow));
+  const snapshot = await getDocs(q);
+  document.getElementById('visites').innerText = `Visiteurs aujourd'hui : ${snapshot.size}`;
+}
+
+// Enregistrer une visite
+async function enregistrerVisite() {
+  const now = new Date();
+  await addDoc(collection(db, 'visites'), {
+    date: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+    timestamp: now
+  });
+}
+
+// Charger messages de contact
+async function loadMessages() {
+  await enregistrerVisite();
+  const q = query(collection(db, 'messages_contact'), orderBy('timestamp', 'asc'));
+  onSnapshot(q, (snap) => {
+    let html = '';
+    snap.forEach(d => {
+      const m = d.data();
+      const dateStr = new Date(m.timestamp.seconds*1000).toLocaleString();
+      html += `
+        <div class="message">
+          <h3>${m.name} (${m.email})</h3>
+          <button class="delete-btn" data-id="${d.id}">🗑️</button>
+          <p>${m.message}</p>
+          <small>Envoyé le: ${dateStr}</small>
+        </div>
+      `;
+    });
+    document.getElementById('messages').innerHTML = html || 'Aucun message.';
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.onclick = () => {
+        deleteDoc(doc(db, 'messages_contact', btn.dataset.id));
+      };
+    });
+  });
+}
+// Charger commandes
+async function loadCommandes() {
+  const snapshot = await getDocs(collection(db, 'commandes'));
+  const container = document.getElementById('commandes');
+  container.innerHTML = '';
+  snapshot.forEach(d => {
+    const c = d.data();
+    container.innerHTML += `
+      <div class="order">
+        <strong>Service:</strong> ${c.service}<br>
+        <strong>Nom:</strong> ${c.nom}<br>
+        <strong>Email:</strong> ${c.email}<br>
+        <strong>Date livraison:</strong> ${c.dateLivraison}<br>
+        <strong>Quantité:</strong> ${c.quantite}<br>
+        <strong>Description:</strong> ${c.description}<br>
+        <strong>Dimensionnement:</strong> ${c.dimensionnement}<br>
+        <strong>Date commande:</strong> ${c.dateCommande ? new Date(c.dateCommande.seconds*1000).toLocaleString() : ''}<br>
+        <button onclick="deleteCommande('${d.id}')">Supprimer</button>
+      </div>
+    `;
+  });
+}
+window.deleteCommande = async (id) => {
+  await deleteDoc(doc(db, 'commandes', id));
+  loadCommandes();
+};
+</script>
+<footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
+  <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">
+    <!-- Liens pages -->
+    <div style="margin:10px;">
+      <a href="contact.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Contact</a>
+      <a href="index.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Accueil</a>
+      <!-- Ajoutez d'autres liens si nécessaire -->
+    </div>
+    <!-- Réseaux sociaux avec icônes Font Awesome -->
+    <div style="margin:10px; display:flex; gap:15px; justify-content:center;">
+      <a href="https://facebook.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://instagram.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+  <div style="margin-top:15px; font-size:14px;">&copy; 2025 Wr. Tous droits réservés.</div>
+</footer>
+</body>
+</html>

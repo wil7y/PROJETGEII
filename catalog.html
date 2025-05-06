@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Catalogue des Services CNC</title>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  
+body {
+  font-family: 'Arial', sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  text-align: center;
+  margin: 20px 0;
+}
+#searchInput {
+  display: block;
+  margin: 0 auto 20px auto;
+  padding: 10px;
+  width: 80%;
+  max-width: 400px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 20px;
+}
+.card {
+  width: 250px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  overflow: hidden;
+  cursor: pointer;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  position: relative;
+}
+.card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+.card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  transition: transform 0.5s;
+}
+.card:hover img {
+  transform: scale(1.1);
+}
+.card h3 {
+  margin: 10px;
+  font-size: 20px;
+  text-align: center;
+}
+.card p {
+  margin: 0 10px 10px 10px;
+  font-size: 14px;
+  color: #555;
+  height: 40px;
+  overflow: hidden;
+}
+button {
+  display: block;
+  margin: 10px auto 15px auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+button:hover {
+  background-color: #0056b3;
+}
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">CNC Services</div>
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="catalog.html">Catalogue</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="connexion.html">Sign up/Sign in</a></li>
+      </ul>
+    </nav>
+    <!-- Menu burger pour mobile -->
+    <div class="burger" id="burger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+
+<h1 style="text-align:center;">Catalogue des Services CNC</h1>
+<input type="text" id="searchInput" placeholder="Rechercher un service..." />
+
+<div class="cards-container" id="cardsContainer">
+  <!-- Cartes dynamiques -->
+</div>
+<script src="js/main.js"></script>
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
+    authDomain: "cnc2-bca09.firebaseapp.com",
+    projectId: "cnc2-bca09",
+    storageBucket: "cnc2-bca09.firebasestorage.app",
+    messagingSenderId: "680616207738",
+    appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+    measurementId: "G-RGD9YN5HNS"
+  // autres paramètres
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Exemple de services (peuvent venir de Firestore ou en dur)
+const services = [
+  { id: 1, title: "Découpe CNC", description: "Découpe précise sur divers matériaux", image: "https://via.placeholder.com/250x150?text=Découpe" },
+  { id: 2, title: "Gravure CNC", description: "Gravure fine et détaillée", image: "https://via.placeholder.com/250x150?text=Gravure" },
+  { id: 3, title: "Fraisage CNC", description: "Fraisage de pièces complexes", image: "https://via.placeholder.com/250x150?text=Fraisage" },
+  // Ajoutez d'autres services
+];
+
+const container = document.getElementById('cardsContainer');
+
+function afficherServices() {
+  container.innerHTML = '';
+  services.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${s.image}" alt="${s.title}">
+      <h3>${s.title}</h3>
+      <p>${s.description}</p>
+      <button data-id="${s.id}">Passer commande</button>
+    `;
+    card.querySelector('button').onclick = () => {
+      // Aller à la page commande avec l'id du service
+      window.location.href = `service.html?service=${s.id}`;
+    };
+    container.appendChild(card);
+  });
+}
+
+document.getElementById('searchInput').oninput = () => {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.card').forEach(c => {
+    const title = c.querySelector('h3').innerText.toLowerCase();
+    const desc = c.querySelector('p').innerText.toLowerCase();
+    if (title.includes(q) || desc.includes(q)) {
+      c.style.display = '';
+    } else {
+      c.style.display = 'none';
+    }
+  });
+};
+
+afficherServices();
+</script>
+<footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
+  <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">
+    <!-- Liens pages -->
+    <div style="margin:10px;">
+      <a href="contact.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Contact</a>
+      <a href="index.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Accueil</a>
+      <!-- Ajoutez d'autres liens si nécessaire -->
+    </div>
+    <!-- Réseaux sociaux avec icônes Font Awesome -->
+    <div style="margin:10px; display:flex; gap:15px; justify-content:center;">
+      <a href="https://facebook.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://instagram.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+  <div style="margin-top:15px; font-size:14px;">&copy; 2025 Wr. Tous droits réservés.</div>
+</footer>
+
+
+</body>
+</html>

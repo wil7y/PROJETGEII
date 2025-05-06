@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Forum Messages Firebase</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #auth-section button {
+    margin-left: 10px;
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  #auth-section button:hover {
+    background-color: #0056b3;
+  }
+  #forum {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 70vh;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+  }
+  .messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+  .message {
+    max-width: 70%;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+    word-wrap: break-word;
+    font-size: 14px;
+    position: relative;
+  }
+  .message.left {
+    align-self: flex-start;
+    background-color: #e0e0e0;
+  }
+  .message.right {
+    align-self: flex-end;
+    background-color: #007bff;
+    color: white;
+  }
+  /* Nom et date */
+  .meta {
+    font-size: 10px;
+    margin-top: 4px;
+    opacity: 0.7;
+  }
+  /* bouton supprimer */
+  .delete-btn {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: #555;
+  }
+  /* admin messages à gauche */
+  .admin {
+    font-weight: bold;
+  }
+  #message-form {
+    display: flex;
+    border-top: 1px solid #ccc;
+  }
+  #message-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+  button[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  @media(max-width: 600px) {
+    .message {
+      max-width: 90%;
+    }
+  }
+
+  .banner {
+  background-color: #ffcc00; /* couleur de fond */
+  color: #000; /* couleur du texte */
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  border-bottom: 2px solid #999;
+}
+</style>
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+
+<body>
+  <header>
+    <div class="logo">CNC Services</div>
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="catalog.html">Catalogue</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="connexion.html">Sign up/Sign in</a></li>
+      </ul>
+    </nav>
+    <!-- Menu burger pour mobile -->
+    <div class="burger" id="burger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+<div class="container">
+  <header>
+    <h1>Discussion Ouverte</h1>
+    <div id="auth-section">
+      <button id="btn-login">Se connecter</button>
+      <button id="btn-register">S'inscrire</button>
+      <button id="btn-logout" style="display:none;">Déconnexion</button>
+    </div>
+  </header>
+
+  <section id="forum" class="hidden">
+    <div class="banner">Posez vos problèmes dans le forum, nous vous aiderons !</div>
+    <div class="messages" id="messages"></div>
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="Votre message..." required />
+      <button type="submit">Envoyer</button>
+    </form>
+  </section>
+</div>
+<script src="js/main.js"></script>
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+  import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, deleteDoc, doc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+  // CONFIG Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
+    authDomain: "cnc2-bca09.firebaseapp.com",
+    projectId: "cnc2-bca09",
+    storageBucket: "cnc2-bca09.firebasestorage.app",
+    messagingSenderId: "680616207738",
+    appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+    measurementId: "G-RGD9YN5HNS"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const btnLogin = document.getElementById('btn-login');
+  const btnRegister = document.getElementById('btn-register');
+  const btnLogout = document.getElementById('btn-logout');
+  const forumSection = document.getElementById('forum');
+  const messagesDiv = document.getElementById('messages');
+  const messageForm = document.getElementById('message-form');
+
+  const ADMIN_EMAIL = "admin@example.com"; // changer à votre email admin
+
+  function toggleForum(loggedIn) {
+    document.querySelector('header').style.display = 'flex';
+    forumSection.classList.toggle('hidden', !loggedIn);
+  }
+
+  // Auth buttons
+  document.getElementById('btn-login').onclick = () => {
+    const email = prompt('Email:');
+    const password = prompt('Mot de passe:');
+    if (email && password) {
+      signInWithEmailAndPassword(auth, email, password).catch((err) => {
+        alert('Erreur: ' + err.message);
+      });
+    }
+  };
+  document.getElementById('btn-register').onclick = () => {
+    const email = prompt('Email:');
+    const password = prompt('Mot de passe:');
+    if (email && password) {
+      createUserWithEmailAndPassword(auth, email, password).catch((err) => {
+        alert('Erreur: ' + err.message);
+      });
+    }
+  };
+  document.getElementById('btn-logout').onclick = () => {
+    signOut(auth);
+  };
+
+  // Sur changement d'auth
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      document.getElementById('btn-logout').style.display = 'inline-block';
+      toggleForum(true);
+      loadMessages();
+    } else {
+      document.getElementById('btn-logout').style.display = 'none';
+      toggleForum(false);
+      messagesDiv.innerHTML = '';
+    }
+  });
+
+  function loadMessages() {
+    const q = query(collection(db, 'messages'), orderBy('timestamp'));
+    onSnapshot(q, (snapshot) => {
+      messagesDiv.innerHTML = '';
+      snapshot.forEach((docSnap) => {
+        const msg = docSnap.data();
+        const messageDiv = document.createElement('div');
+
+        // Détermine si admin ou utilisateur
+        const isAdmin = (auth.currentUser && auth.currentUser.email === ADMIN_EMAIL);
+        const isOwnMessage = (auth.currentUser && msg.uid === auth.currentUser.uid);
+        const alignClass = (isAdmin || isOwnMessage) ? 'right' : 'left';
+
+        messageDiv.className = 'message ' + alignClass;
+
+        // Si admin, afficher "Admin" sinon le nom email
+        const senderName = (msg.email === ADMIN_EMAIL) ? 'Admin' : msg.email;
+
+        // Crée le contenu HTML
+        messageDiv.innerHTML = `
+          <div><strong>${senderName}</strong></div>
+          <div>${msg.text}</div>
+          <div class="meta">${msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleString() : ''}</div>
+        `;
+
+        // Si c'est l'auteur ou admin, ajouter bouton supprimer
+        if (isOwnMessage || isAdmin) {
+          const delBtn = document.createElement('button');
+          delBtn.innerText = '🗑️';
+          delBtn.className = 'delete-btn';
+          delBtn.onclick = () => {
+            deleteDoc(doc(collection(db, 'messages'), docSnap.id));
+          };
+          messageDiv.appendChild(delBtn);
+        }
+
+        messagesDiv.appendChild(messageDiv);
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+  }
+
+  document.getElementById('message-form').onsubmit = (e) => {
+    e.preventDefault();
+    const text = document.getElementById('message-input').value.trim();
+    if (text && auth.currentUser) {
+      addDoc(collection(db, 'messages'), {
+        text: text,
+        uid: auth.currentUser.uid,
+        email: auth.currentUser.email,
+        timestamp: serverTimestamp()
+      }).then(() => {
+        document.getElementById('message-input').value = '';
+      }).catch((err) => {
+        alert('Erreur: ' + err.message);
+      });
+    } else {
+      alert('Vous devez vous connecter pour envoyer un message.');
+    }
+  };
+</script>
+<footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
+  <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">
+    <!-- Liens pages -->
+    <div style="margin:10px;">
+      <a href="contact.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Contact</a>
+      <a href="index.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Accueil</a>
+      <!-- Ajoutez d'autres liens si nécessaire -->
+    </div>
+    <!-- Réseaux sociaux avec icônes Font Awesome -->
+    <div style="margin:10px; display:flex; gap:15px; justify-content:center;">
+      <a href="https://facebook.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://instagram.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+  <div style="margin-top:15px; font-size:14px;">&copy; 2025 Wr. Tous droits réservés.</div>
+</footer>
+
+</body>
+</html>

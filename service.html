@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Passer une commande</title>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+body {
+  font-family: 'Arial', sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 20px;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+form {
+  max-width: 600px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.form-group {
+  margin-bottom: 15px;
+}
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:hover {
+  background: #0056b3;
+}
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo">CNC Services</div>
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="catalog.html">Catalogue</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="connexion.html">Sign up/Sign in</a></li>
+      </ul>
+    </nav>
+    <!-- Menu burger pour mobile -->
+    <div class="burger" id="burger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+
+<h1>Passer une commande</h1>
+<form id="orderForm">
+  <div class="form-group">
+    <label>Service</label>
+    <input type="text" id="serviceName" readonly>
+  </div>
+  <div class="form-group">
+    <label>Nom</label>
+    <input type="text" id="nom" required>
+  </div>
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" id="email" required>
+  </div>
+  <div class="form-group">
+    <label>Date de livraison</label>
+    <input type="date" id="dateLivraison" required>
+  </div>
+  <div class="form-group">
+    <label>Nombre de fois</label>
+    <input type="number" id="quantite" min="1" required>
+  </div>
+  <div class="form-group">
+    <label>Description</label>
+    <textarea id="description" rows="4"></textarea>
+  </div>
+  <div class="form-group">
+    <label>Dimensionnement</label>
+    <textarea id="dimensionnement" rows="2"></textarea>
+  </div>
+  <button type="submit">Envoyer la commande</button>
+</form>
+<script src="js/main.js"></script>
+<script>
+  // Récupérer le service via URL param
+const urlParams = new URLSearchParams(window.location.search);
+const serviceId = urlParams.get('service');
+// Pour l'exemple, on peut faire une recherche dans services
+const services = [
+  { id: 1, title: "Découpe CNC" },
+  { id: 2, title: "Gravure CNC" },
+  { id: 3, title: "Fraisage CNC" }
+];
+// Trouver le service
+const service = services.find(s => s.id == serviceId);
+if (service) {
+  document.getElementById('serviceName').value = service.title;
+} else {
+  document.getElementById('serviceName').value = 'Service inconnu';
+}
+
+// Envoyer la commande à Firebase
+import { getFirestore, collection, addDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
+    authDomain: "cnc2-bca09.firebaseapp.com",
+    projectId: "cnc2-bca09",
+    storageBucket: "cnc2-bca09.firebasestorage.app",
+    messagingSenderId: "680616207738",
+    appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+    measurementId: "G-RGD9YN5HNS"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+document.getElementById('orderForm').onsubmit = async (e) => {
+  e.preventDefault();
+  const orderData = {
+    service: document.getElementById('serviceName').value,
+    nom: document.getElementById('nom').value,
+    email: document.getElementById('email').value,
+    dateLivraison: document.getElementById('dateLivraison').value,
+    quantite: document.getElementById('quantite').value,
+    description: document.getElementById('description').value,
+    dimensionnement: document.getElementById('dimensionnement').value,
+    dateCommande: new Date(),
+  };
+  await addDoc(collection(db, 'commandes'), orderData);
+  alert('Commande envoyée !');
+  window.location.href='catalogue.html'; // revenir au catalogue ou page de confirmation
+};
+</script>
+<footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
+  <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">
+    <!-- Liens pages -->
+    <div style="margin:10px;">
+      <a href="contact.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Contact</a>
+      <a href="index.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Accueil</a>
+      <!-- Ajoutez d'autres liens si nécessaire -->
+    </div>
+    <!-- Réseaux sociaux avec icônes Font Awesome -->
+    <div style="margin:10px; display:flex; gap:15px; justify-content:center;">
+      <a href="https://facebook.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://twitter.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="https://instagram.com" target="_blank" style="color:#fff; font-size:20px;">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+  <div style="margin-top:15px; font-size:14px;">&copy; 2025 Wr. Tous droits réservés.</div>
+</footer>
+
+
+
+</body>
+</html>

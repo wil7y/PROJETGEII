@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Connexion / Inscription</title>
+<style>
+  body { font-family: Arial, sans-serif; background:#f0f2f5; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; margin:0; }
+  .container { background:#fff; padding:30px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.2); max-width:400px; width:90%; }
+  h2 { text-align:center; margin-bottom:20px; color:#333; }
+  input { width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:1px solid #ccc; font-size:14px; }
+  button { width:100%; padding:12px; background:#007bff; color:#fff; border:none; border-radius:6px; font-size:16px; cursor:pointer; margin-top:10px; transition:background 0.3s; }
+  button:hover { background:#0056b3; }
+</style>
+<link rel="stylesheet" href="css/styles.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+</head>
+<body>
+    
+
+<div class="container">
+  <h2>Se connecter / S'inscrire</h2>
+  <input type="email" id="email" placeholder="Adresse email" required />
+  <input type="password" id="password" placeholder="Mot de passe" required />
+  <button id="btn-connexion">Se connecter</button>
+  <button id="btn-inscription">S'inscrire</button>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
+    authDomain: "cnc2-bca09.firebaseapp.com",
+    projectId: "cnc2-bca09",
+    storageBucket: "cnc2-bca09.firebasestorage.app",
+    messagingSenderId: "680616207738",
+    appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+    measurementId: "G-RGD9YN5HNS"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const adminEmail = "admin@example.com"; // Modifier selon l'admin
+
+document.getElementById('btn-connexion').onclick = () => {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (email && password) {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        // La redirection sera gérée par onAuthStateChanged
+      })
+      .catch(e => alert('Erreur : ' + e.message));
+  } else {
+    alert('Veuillez entrer email et mot de passe');
+  }
+};
+
+document.getElementById('btn-inscription').onclick = () => {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  if (email && password) {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        // La redirection sera gérée par onAuthStateChanged
+      })
+      .catch(e => alert('Erreur : ' + e.message));
+  } else {
+    alert('Veuillez entrer email et mot de passe');
+  }
+};
+
+// Sur changement d'authentification
+onAuthStateChanged(auth, user => {
+  if (user) {
+    if (user.email === adminEmail) {
+      // Si c'est l'admin, on va vers la page admin
+      window.location.href = "admin.html"; // Modifier si nécessaire
+    } else {
+      // Sinon, vers la page accueil
+      window.location.href = "index.html"; // Modifier si nécessaire
+    }
+  }
+});
+</script>
+<script src="js/main.js"></script>
+
+
+</body>
+
+</html>
