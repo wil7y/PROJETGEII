@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" href="logo.png" type="image/png">
 <title>Forum Messages Firebase</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -137,7 +138,9 @@
 
 <body>
   <header>
-    <div class="logo">CNC Services</div>
+    <div class="logo-container">
+      <img src="logo.jpg"  class="logo" />
+    </div>
     <nav class="nav-menu">
       <ul>
         <li><a href="index.html">Accueil</a></li>
@@ -167,6 +170,8 @@
 
   <section id="forum" class="hidden">
     <div class="banner">Posez vos problèmes dans le forum, nous vous aiderons !</div>
+    <div>.</div>
+    <di>.</di>
     <div class="messages" id="messages"></div>
     <form id="message-form">
       <input type="text" id="message-input" placeholder="Votre message..." required />

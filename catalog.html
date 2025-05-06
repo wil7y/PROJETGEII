@@ -6,6 +6,7 @@
 <title>Catalogue des Services CNC</title>
 <link rel="stylesheet" href="css/styles.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<link rel="icon" href="logo.png" type="image/png">
 <style>
   
 body {
@@ -90,7 +91,9 @@ button:hover {
 </head>
 <body>
   <header>
-    <div class="logo">CNC Services</div>
+    <div class="logo-container">
+      <img src="logo.jpg"  class="logo" />
+    </div>
     <nav class="nav-menu">
       <ul>
         <li><a href="index.html">Accueil</a></li>
@@ -115,6 +118,9 @@ button:hover {
 <div class="cards-container" id="cardsContainer">
   <!-- Cartes dynamiques -->
 </div>
+<div>.</div>
+<div>.</div>
+
 <script src="js/main.js"></script>
 <!-- Firebase SDK -->
 <script type="module">
@@ -134,11 +140,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+
 // Exemple de services (peuvent venir de Firestore ou en dur)
 const services = [
-  { id: 1, title: "Découpe CNC", description: "Découpe précise sur divers matériaux", image: "https://via.placeholder.com/250x150?text=Découpe" },
-  { id: 2, title: "Gravure CNC", description: "Gravure fine et détaillée", image: "https://via.placeholder.com/250x150?text=Gravure" },
-  { id: 3, title: "Fraisage CNC", description: "Fraisage de pièces complexes", image: "https://via.placeholder.com/250x150?text=Fraisage" },
+  { id: 1, title: "Découpe CNC", description: "Découpe précise sur divers matériaux", image: "/pcb site/IMG-20250505-WA0005.jpg" },
+  { id: 2, title: "Gravure CNC", description: "Gravure fine et détaillée", image: "/pcb site/IMG-20250505-WA0006.jpg" },
+  { id: 3, title: "Fraisage CNC", description: "Fraisage de pièces complexes", image: "/pcb site/IMG-20250505-WA0008.jpg" },
   // Ajoutez d'autres services
 ];
 

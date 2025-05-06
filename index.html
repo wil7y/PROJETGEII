@@ -4,16 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Accueil - Services CNC</title>
+  <link rel="icon" href="logo.png" type="image/png">
   <meta name="description" content="Vente de services CNC pour tous vos projets" />
   <!-- Lien vers votre CSS -->
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- Favicon si vous en avez -->
+
+
 </head>
 <body>
   <!-- En-tête avec navigation -->
   <header>
-    <div class="logo">CNC Services</div>
+    <div class="logo-container">
+      <img src="logo.jpg"  class="logo" />
+    </div>
     <nav class="nav-menu">
       <ul>
         <li><a href="index.html">Accueil</a></li>
@@ -30,11 +35,17 @@
       <div></div>
     </div>
   </header>
-
+  <div>.</div>
+  <div>.</div>
   <!-- Section présentation -->
   <section class="hero">
+    
     <h1>Bienvenue chez CNC Services</h1>
-    <p>Votre spécialiste en services CNC pour tous vos projets</p>
+    <div class="slide">
+      <div class="typewriter" data-text="Votre spécialiste en services CNC pour tous vos projets"></div>
+    </div>
+    
+ 
     <a href="catalog.html" class="btn">Découvrir nos services</a>
   </section>
 
@@ -42,15 +53,15 @@
   <section class="features">
     <div class="feature">
       <h2>Précision</h2>
-      <p>Des services de haute précision pour vos pièces uniques.</p>
+      <p>Usinage de haute précision pour des<br>tolérances au centième de millimétre, adapté aux besoins industriels les plus exigeants</p>
     </div>
     <div class="feature">
       <h2>Rapidité</h2>
-      <p>Des délais courts pour répondre à vos besoins urgents.</p>
+      <p>Production rapide et efficace grâce à notre<br>parc machine optimisé, sans compromis sur la<br>qualité.</p>
     </div>
     <div class="feature">
       <h2>Qualité</h2>
-      <p>Matériaux et finitions irréprochables.</p>
+      <p>Finition soignée, contrôle rigoureux et<br>matériaux de prmier choix pour un rendu<br>professionnel garanti</p>
     </div>
   </section>
 
@@ -88,5 +99,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
 <!-- Firestore -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
 </body>
 </html>
