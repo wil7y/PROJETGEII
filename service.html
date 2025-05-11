@@ -54,6 +54,21 @@ button {
 button:hover {
   background: #0056b3;
 }
+
+input[type="file"] { margin: 20px; }
+    .result { margin-top: 20px; word-break: break-all; }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.1) rotate(-2deg);
+    }
 </style>
 </head>
 <body>
@@ -109,10 +124,21 @@ button:hover {
     <label>Dimensionnement</label>
     <textarea id="dimensionnement" rows="2"></textarea>
   </div>
+  <div><h2>Uploader un fichier Gerber</h2>
+    <input type="file" id="fileInput" /></div>
+<br />
   <button type="submit">Envoyer la commande</button>
 </form>
+
+
+
+
 <script src="main.js"></script>
-<script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+<script type="module">
+
+
   // Récupérer le service via URL param
 const urlParams = new URLSearchParams(window.location.search);
 const serviceId = urlParams.get('service');
@@ -127,7 +153,7 @@ const service = services.find(s => s.id == serviceId);
 if (service) {
   document.getElementById('serviceName').value = service.title;
 } else {
-  document.getElementById('serviceName').value = 'Service inconnu';
+  document.getElementById('serviceName').value = "Service inconnu";
 }
 
 // Envoyer la commande à Firebase
@@ -156,12 +182,63 @@ document.getElementById('orderForm').onsubmit = async (e) => {
     quantite: document.getElementById('quantite').value,
     description: document.getElementById('description').value,
     dimensionnement: document.getElementById('dimensionnement').value,
-    dateCommande: new Date(),
+    dateCommande: new Date()
   };
-  await addDoc(collection(db, 'commandes'), orderData);
-  alert('Commande envoyée !');
-  window.location.href='catalogue.html'; // revenir au catalogue ou page de confirmation
+  try{
+    await addDoc(collection(db,"commandes"), orderData);
+    uploadFile();
+    alert("commande envoyée !");
+    window.location.href='catalog.html'; // revenir au catalogue ou page de confirmation
+    document.getElementById('orderForm').reset();
+  } catch (err) {
+    console.error('Erreur lors de l envoi: ', err);
+    alert("Erreur lors de l'envoi ");
+  }
+  
 };
+
+
+async function uploadFile() {
+      const fileInput = document.getElementById('fileInput');
+      if (!fileInput.files.length) {
+        alert("Choisissez un fichier !");
+        return;
+      }
+
+      const file = fileInput.files[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'gerber_upload'); // Ton preset Cloudinary
+      formData.append('resource_type', 'raw');
+
+      const cloudName = 'dqsw2byfi'; // Remplace par ton Cloud Name
+
+      try {
+        const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/raw/upload`, {
+          method: 'POST',
+          body: formData
+        });
+
+    const data = await res.json();
+
+    
+        if (data.secure_url) {
+          const fileUrl = data.secure_url;
+  await addDoc(collection(db, "fichiers"), { fileUrl });
+       alert("Fichier envoyé sur le Cloud!");
+        console.log("Lien Cloudinary :", data.secure_url);
+      } else {
+        console.error("Réponse Cloudinary : ", data);
+        alert("Erreur lors de l'envoi : " + (data.error?.message || "inconnue"));
+      }
+    } catch (err) {
+      console.error("Erreur fetch : ", err);
+      alert("Échec de l'envoi du fichier.");
+    }
+    }
+
+
+
 </script>
 <footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
   <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">

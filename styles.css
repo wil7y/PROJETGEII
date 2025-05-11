@@ -7,10 +7,12 @@
   box-sizing: border-box;
 }
 
+
 body {
   font-family: Arial, sans-serif;
   line-height: 1.6;
   color: #333;
+  font-display: swap;
 }
 
 /* En-tête */
@@ -50,7 +52,31 @@ header {
 .nav-menu a {
   color: #fff;
   text-decoration: none;
+
 }
+
+nav ul li a {
+  font-size: 18px;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+nav ul li a:hover {
+  animation: bounce 0.8s ease forwards;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-5px); }
+  50% { transform: translateY(0); }
+  70% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+
 
 /* Menu burger (pour mobile) */
 .burger {
@@ -70,7 +96,7 @@ header {
 
 /* Section hero */
 .hero {
-  background: url("IMG-20250505-WA0003.png") no-repeat center center/cover;
+  background: url("fond.png ") no-repeat center center/cover;
   color: #fff;
   padding: 13rem 1rem;
   text-align: center;
@@ -145,7 +171,29 @@ footer {
   .burger {
     display: flex;
   }
+
+  nav ul li a {
+    font-size: 12px;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.3s ease;
+  }
+  
+  nav ul li a:hover {
+    animation: shake 0.5s ease forwards;
+  }
+  
+  @keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    50% { transform: rotate(-3deg); }
+    75% { transform: rotate(2deg); }
+    100% { transform: rotate(0deg); }
+  }
 }
+  
 
 /* Styles pour la page catalogue */
 .filters {
@@ -225,9 +273,9 @@ footer {
 .typewriter {
   position: absolute;
   top: 20px;
-  left: 410px;
-  font-size: 24px;
-  color: rgb(23, 118, 16);
+  left: 390px;
+  font-size: 19px;
+  color: rgb(249, 250, 255);
   text-shadow: 1px 1px 3px black;
   font-weight: bold;
   max-width: 80%;
@@ -240,4 +288,16 @@ footer {
   .typewriter {
     font-size: 18px;
   }
+}
+
+footer {
+ 
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+footer a:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }

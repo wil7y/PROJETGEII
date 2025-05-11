@@ -12,6 +12,50 @@
   input { width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:1px solid #ccc; font-size:14px; }
   button { width:100%; padding:12px; background:#007bff; color:#fff; border:none; border-radius:6px; font-size:16px; cursor:pointer; margin-top:10px; transition:background 0.3s; }
   button:hover { background:#0056b3; }
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    font-size: 1rem;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transform: translateY(-40px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+    animation: bounce 0.5s ease;
+  }
+
+  .toast .emoji {
+    font-size: 1.6rem;
+    animation: spinPop 1.2s ease infinite;
+
+  }
+
+  @keyframes bounce {
+    0% { transform: translateY(-40px);}
+    60% { transform: translateY(10px);}
+    100% { transform: translate(0); }
+  }
+
+  @keyframes spinPop {
+    0%, 100%{ transform: scale(1) rotate(0deg);}
+    50% { transform: scale(1.3) rotate(15deg);}
+  
+  }
 </style>
 <link rel="stylesheet" href="styles.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -19,6 +63,7 @@
 </head>
 <body>
     
+  <div id="success-toast" class="toast hidden">Connexion reussie <span class="emoji">:)</span> <span id="username"></span></div>
 
 <div class="container">
   <h2>Se connecter / S'inscrire</h2>
@@ -27,6 +72,8 @@
   <button id="btn-connexion">Se connecter</button>
   <button id="btn-inscription">S'inscrire</button>
 </div>
+
+
 
 <!-- Firebase SDK -->
 <script type="module">
@@ -47,18 +94,37 @@ const auth = getAuth(app);
 
 const adminEmail = "admin@example.com"; // Modifier selon l'admin
 
+function showSuccessMessage(nomUtilisateur){
+  const toast = document.getElementById('sucess-toast');
+  const nameSpan = document.getElementById('username');
+  nameSpan.textContent = nomUtilisateur;
+
+  toast.classList.remove('hidden');
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+    toast.classList.add('hidden');
+  }, 3000);
+      
+  }
+
+
 document.getElementById('btn-connexion').onclick = () => {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value.trim();
+  
   if (email && password) {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         // La redirection sera gérée par onAuthStateChanged
       })
       .catch(e => alert('Erreur : ' + e.message));
+      showSuccessMessage(email);
   } else {
     alert('Veuillez entrer email et mot de passe');
   }
+  
 };
 
 document.getElementById('btn-inscription').onclick = () => {
@@ -70,9 +136,11 @@ document.getElementById('btn-inscription').onclick = () => {
         // La redirection sera gérée par onAuthStateChanged
       })
       .catch(e => alert('Erreur : ' + e.message));
+      showSuccessMessage(email);
   } else {
     alert('Veuillez entrer email et mot de passe');
   }
+  
 };
 
 // Sur changement d'authentification
@@ -81,12 +149,14 @@ onAuthStateChanged(auth, user => {
     if (user.email === adminEmail) {
       // Si c'est l'admin, on va vers la page admin
       window.location.href = "admin.html"; // Modifier si nécessaire
-    } else {
+    } else{
       // Sinon, vers la page accueil
-      window.location.href = "index.html"; // Modifier si nécessaire
+    window.location.href = "index.html"; // Modifier si nécessaire
+    }
+    
     }
   }
-});
+);
 </script>
 <script src="main.js"></script>
 

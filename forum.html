@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <style>
   body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: #f0f2f5;
     margin: 0;
     padding: 0;
@@ -20,10 +20,19 @@
     padding: 20px;
   }
   header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  background-color: #075e54;
+  color: white;
+  padding: 10px 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+header img.logo {
+  height: 40px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
   #auth-section button {
     margin-left: 10px;
     padding: 8px 12px;
@@ -66,15 +75,21 @@
     font-size: 14px;
     position: relative;
   }
-  .message.left {
-    align-self: flex-start;
-    background-color: #e0e0e0;
-  }
   .message.right {
-    align-self: flex-end;
-    background-color: #007bff;
-    color: white;
-  }
+  align-self: flex-end;
+  background-color: #dcf8c6;
+  color: #000;
+  border-radius: 15px 15px 0 15px;
+}
+
+.message.left {
+  align-self: flex-start;
+  background-color: #fff;
+  color: #000;
+  border-radius: 15px 15px 15px 0;
+  border: 1px solid #ddd;
+}
+
   /* Nom et date */
   .meta {
     font-size: 10px;
@@ -102,26 +117,75 @@
   }
   #message-input {
     flex: 1;
-    padding: 10px;
+    padding: 5px;
     border: none;
     outline: none;
-    font-size: 14px;
+    font-size: 1rem;
   }
-  button[type="submit"] {
-    padding: 10px 20px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-  }
+  #message-form {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background: #f0f0f0;
+}
+
+#message-input {
+  flex: 1;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 20px;
+  background-color: #fff;
+  margin-right: 10px;
+}
+
+button[type="submit"] {
+  background: none;
+  border: none;
+  color: #075e54;
+  font-size: 24px;
+  cursor: pointer;
+}
+
   button[type="submit"]:hover {
-    background-color: #0056b3;
+    animation: bounce 0.6s ease;
+  transform: rotate(-3deg);
   }
+
+  @keyframes bounce {
+  0%   { transform: scale(1) translateY(0); }
+  30%  { transform: scale(1.1, 0.9) translateY(-5px); }
+  50%  { transform: scale(0.95, 1.1) translateY(3px); }
+  70%  { transform: scale(1.05, 0.95) translateY(-2px); }
+  100% { transform: scale(1) translateY(0); }
+}
   @media(max-width: 600px) {
     .message {
       max-width: 90%;
     }
   }
+  @media (prefers-color-scheme: dark) {
+  body {
+    background-color: #111;
+    color: white;
+  }
+  .message.left {
+    background-color: #333;
+    color: white;
+  }
+  .message.right {
+    background-color: #056162;
+    color: white;
+  }
+  #message-form {
+    background: #222;
+  }
+  #message-input {
+    background-color: #333;
+    color: white;
+  }
+}
+
 
   .banner {
   background-color: #ffcc00; /* couleur de fond */
@@ -175,7 +239,7 @@
     <div class="messages" id="messages"></div>
     <form id="message-form">
       <input type="text" id="message-input" placeholder="Votre message..." required />
-      <button type="submit">Envoyer</button>
+      <button type="submit">Envoyer<i class="fas fa-paper-plane"></i></button>
     </form>
   </section>
 </div>
@@ -271,7 +335,10 @@
 
         // Crée le contenu HTML
         messageDiv.innerHTML = `
-          <div><strong>${senderName}</strong></div>
+          <div style="display:flex; align-items:center;">
+  <img src="avatar.png" style="width:30px; height:30px; border-radius:50%; margin-right:8px;">
+  <strong>${senderName}</strong>
+</div>
           <div>${msg.text}</div>
           <div class="meta">${msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleString() : ''}</div>
         `;

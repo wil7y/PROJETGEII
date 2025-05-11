@@ -143,9 +143,12 @@ const db = getFirestore(app);
 
 // Exemple de services (peuvent venir de Firestore ou en dur)
 const services = [
-  { id: 1, title: "Découpe CNC", description: "Découpe précise sur divers matériaux", image: "IMG-20250505-WA0005.png" },
-  { id: 2, title: "Gravure CNC", description: "Gravure fine et détaillée", image: "IMG-20250505-WA0006.png" },
-  { id: 3, title: "Fraisage CNC", description: "Fraisage de pièces complexes", image: "IMG-20250505-WA0008.png" },
+  { id: 1, title: "Gravure CNC de circuits imprimés", description: "Gravure de vos designs avec une précision micrométrique.",
+   image: "IMG-20250505-WA0005.png" },
+  { id: 2, title: "Sérigraphie   &    perçage", description: "Marquage, perçage et finition de vos PCBs selon les normes.",
+   image: "IMG-20250505-WA0006.png" },
+  { id: 3, title: "Assemblage de composants", description: "Montage manuel ou semi-automatisé de composants CMS et traversants.", 
+  image: "IMG-20250505-WA0008.png" },
   // Ajoutez d'autres services
 ];
 

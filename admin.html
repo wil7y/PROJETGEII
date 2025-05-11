@@ -91,6 +91,28 @@ button.delete-btn {
   font-size: 14px;
   color: red;
 }
+
+#fileList {
+    margin-top: 20px;
+}
+
+.file-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.file-item a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.file-item a:hover {
+    text-decoration: underline;
+}
+
 </style>
 </head>
 <body>
@@ -123,13 +145,22 @@ button.delete-btn {
   <button id="btn-logout" style="display:none;">Déconnexion</button>
 </div>
 
-<div id="visites">Chargement du nombre de visiteurs...</div>
+<div id="visites">📊Chargement du nombre de visiteurs...</div>
+<div>.</div>
+<div>.</div>
 
-<h2>Messages reçus</h2>
+<h2>📨 Messages reçus</h2>
 <div id="messages">Chargement...</div>
+<div>.</div>
+<div>.</div>
 
-<h2>Commandes</h2>
+<h2>📁 Commandes</h2>
 <div id="commandes">Chargement...</div>
+
+<h2> Gestion des fichiers</h2>
+    <div id="fileList">
+        <!-- Les fichiers seront affichés ici -->
+    </div>
 <script src="main.js"></script>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
@@ -247,10 +278,32 @@ async function loadCommandes() {
     `;
   });
 }
+
 window.deleteCommande = async (id) => {
   await deleteDoc(doc(db, 'commandes', id));
-  loadCommandes();
+
 };
+loadCommandes();
+
+async function getFiles() {
+            const querySnapshot = await getDocs(collection(db, "fichiers"));
+            const fileList = document.getElementById("fileList");
+
+            querySnapshot.forEach((doc) => {
+                const fileUrl = doc.data().fileUrl;
+                const fileName = doc.id; // Utilisation de l'ID du document comme nom du fichier
+                const fileItem = document.createElement('div');
+                fileItem.classList.add('file-item');
+                fileItem.innerHTML = `
+                    <p>Nom du fichier: ${fileName}</p>
+                    <a href="${fileUrl}" target="_blank">Télécharger le fichier</a>
+                `;
+                fileList.appendChild(fileItem);
+            });
+        }
+
+        // Charger les fichiers à l'initialisation
+        window.onload = getFiles;
 </script>
 <footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
   <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">
