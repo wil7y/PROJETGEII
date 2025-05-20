@@ -110,6 +110,10 @@ button:hover {
       <div></div>
     </div>
   </header>
+<div id="assistant-container">
+  <img id="assistant" src="bot_cligne.png" alt="Assistant">
+  <div id="speech-bubble"></div>
+</div>
 
 
 <h1 style="text-align:center;">Catalogue des Services CNC</h1>
@@ -120,6 +124,8 @@ button:hover {
 </div>
 <div>.</div>
 <div>.</div>
+
+
 
 <script src="main.js"></script>
 <!-- Firebase SDK -->
@@ -188,6 +194,124 @@ document.getElementById('searchInput').oninput = () => {
 
 afficherServices();
 </script>
+
+<script>
+
+  const assistant    = document.getElementById("assistant");
+const bubble       = document.getElementById("speech-bubble");
+const containe   = document.getElementById("assistant-container");
+
+// Images du bot pour animation
+const botImages = ["bot_charge.png", "bot_cligne.png", "bot_dort.png"];
+let imgIndex = 0;
+
+// Dialogues simples
+const dialogues = [
+  "Te revoilà ! Notre catalogue est à ta disposition😊",
+  "Gravure, Sérigraphie, Asssemblage qu'esce qui te plairait ?",
+  "Tu peux utiliser la barre de recherche pour aller plus vite",
+  "Si tu veux passer une commande on aura besoin de quelques informations"
+];
+let dlgIndex = 0;
+let side = "left"; // "left" ou "right"
+
+// Change l'image du bot toutes les 700 ms pour animer
+function animateBot() {
+  imgIndex = (imgIndex + 1) % botImages.length;
+  assistant.src = botImages[imgIndex];
+}
+setInterval(animateBot, 8000);
+
+// Affiche le prochain message
+function showDialogue() {
+  bubble.textContent = dialogues[dlgIndex];
+  bubble.style.display = "block";
+  dlgIndex = (dlgIndex + 1) % dialogues.length;
+  positionBubble();
+}
+
+// Cache la bulle au clic dessus
+bubble.addEventListener("click", () => {
+  bubble.style.display = "none";
+});
+
+// Affiche bulle au clic sur le bot
+assistant.addEventListener("click", showDialogue);
+
+// Positionne la bulle selon le côté et évite débordements
+function positionBubble() {
+  const containerRect = containe.getBoundingClientRect();
+  const bubbleRect = bubble.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  if (side === "left") {
+    bubble.style.left = assistant.offsetWidth + 10 + "px";
+    bubble.style.right = "auto";
+
+    // Assure que la bulle ne déborde pas à droite
+    if (containerRect.left + assistant.offsetWidth + 10 + bubbleRect.width > viewportWidth) {
+      bubble.style.left = (viewportWidth - containerRect.left - bubbleRect.width - 10) + "px";
+    }
+
+    // Triangle à gauche
+    bubble.style.setProperty("--triangle-position", "left");
+    bubble.style.setProperty("border-color", "rgba(255,255,255,0.8) transparent transparent transparent");
+    bubble.style.setProperty("left", assistant.offsetWidth + 10 + "px");
+
+    // Triangle styling via ::after
+    bubble.style.removeProperty("right");
+    bubble.style.removeProperty("border-color");
+    // On peut injecter un style ou ajouter un classe plus simple (voir plus bas)
+  } else {
+    bubble.style.right = assistant.offsetWidth + 10 + "px";
+    bubble.style.left = "auto";
+
+    // Assure que la bulle ne déborde pas à gauche
+    if (containerRect.right - assistant.offsetWidth - 10 - bubbleRect.width < 0) {
+      bubble.style.right = (viewportWidth - containerRect.right + assistant.offsetWidth + 10) + "px";
+    }
+
+    // Triangle à droite
+    bubble.style.setProperty("--triangle-position", "right");
+    bubble.style.setProperty("border-color", "rgba(255,255,255,0.8) transparent transparent transparent");
+  }
+}
+
+// Déplace le bot d'un bord à l'autre
+function moveBot() {
+  if (side === "left") {
+    containe.style.left = "auto";
+    containe.style.right = "20px";
+    side = "right";
+  } else {
+    containe.style.right = "auto";
+    containe.style.left = "20px";
+    side = "left";
+  }
+  
+  positionBubble();
+}
+
+// Boucles
+setInterval(moveBot, 20000);       // change de côté
+setInterval(showDialogue, 10000);   // nouveau message
+
+function positionBubble() {
+  if (side === "left") {
+    bubble.classList.add("left");
+    bubble.classList.remove("right");
+    bubble.style.left = assistant.offsetWidth + 10 + "px";
+    bubble.style.right = "auto";
+  } else {
+    bubble.classList.add("right");
+    bubble.classList.remove("left");
+    bubble.style.right = assistant.offsetWidth + 10 + "px";
+    bubble.style.left = "auto";
+  }
+}
+
+</script>
 <footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
   <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">
     <!-- Liens pages -->
@@ -198,14 +322,14 @@ afficherServices();
     </div>
     <!-- Réseaux sociaux avec icônes Font Awesome -->
     <div style="margin:10px; display:flex; gap:15px; justify-content:center;">
-      <a href="https://facebook.com" target="_blank" style="color:#fff; font-size:20px;">
+      <a href="https://www.facebook.com/profile.php?id=61576195028773" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
         <i class="fab fa-facebook-f"></i>
       </a>
-      <a href="https://twitter.com" target="_blank" style="color:#fff; font-size:20px;">
-        <i class="fab fa-twitter"></i>
+      <a href="+237 6 82 52 42 96" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
+        <i class="fab fa-whatsapp"></i>
       </a>
-      <a href="https://instagram.com" target="_blank" style="color:#fff; font-size:20px;">
-        <i class="fab fa-instagram"></i>
+      <a href="contactiutdlapcb@gmail.com" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
+        <i class="fab fa-linkedin"></i>
       </a>
     </div>
   </div>

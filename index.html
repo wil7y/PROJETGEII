@@ -10,6 +10,10 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <!-- Favicon si vous en avez -->
+<div id="assistant-container">
+  <img id="assistant" src="bot_cligne.png" alt="Assistant">
+  <div id="speech-bubble"></div>
+</div>
 
 
 </head>
@@ -85,14 +89,14 @@
     
     <!-- Réseaux sociaux avec icônes Font Awesome -->
     <div style="margin:10px; display:flex; gap:15px; justify-content:center;">
-      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
+      <a href="https://www.facebook.com/profile.php?id=61576195028773" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
         <i class="fab fa-facebook-f"></i>
       </a>
-      <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
+      <a href="+237 6 82 52 42 96" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
         <i class="fab fa-whatsapp"></i>
       </a>
-      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
-        <i class="fab fa-instagram"></i>
+      <a href="contactiutdlapcb@gmail.com" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
+        <i class="fab fa-linkedin"></i>
       </a>
     </div>
   </div>
@@ -100,7 +104,7 @@
   <div class="margin:10px;">
     <h3 class="text-2xl font-semibold mb-2">Nos coordonnées</h3>
     <p><strong>Email :</strong> contact@iutdlapcb.com</p>
-    <p><strong>Téléphone :</strong> +237 (657 920 400/678 388 234)</p>
+    <p><strong>Téléphone :</strong> +237 (657 920 400/698 856 751)</p>
     <p><strong>Adresse :</strong> IUT de Douala, Littoral, Cameroun</p>
   </div>
   <div style="margin-top:15px; font-size:14px;">&copy; 2025 Wr. Tous droits réservés.</div>
@@ -114,6 +118,125 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
 <!-- Firestore -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+<script>
+
+  const assistant    = document.getElementById("assistant");
+const bubble       = document.getElementById("speech-bubble");
+const container    = document.getElementById("assistant-container");
+
+// Images du bot pour animation
+const botImages = ["bot_charge.png", "bot_cligne.png", "bot_dort.png"];
+let imgIndex = 0;
+
+// Dialogues simples
+const dialogues = [
+  "Salut ! Je suis Mr IUT toujours disponible pour vous aidez😊",
+  "Vous êtes à l'acceuil, Vous avez entendu parler de IUTDLAPCB ?",
+  "Nous faisons principalement dans la Gravure et la sérigrahie, n'hésitez pas à nous contacter",
+  "Tu veux passer une commande ? clique sur Découvrir au dessus"
+];
+let dlgIndex = 0;
+let side = "left"; // "left" ou "right"
+
+// Change l'image du bot toutes les 700 ms pour animer
+function animateBot() {
+  imgIndex = (imgIndex + 1) % botImages.length;
+  assistant.src = botImages[imgIndex];
+}
+setInterval(animateBot, 8000);
+
+// Affiche le prochain message
+function showDialogue() {
+  bubble.textContent = dialogues[dlgIndex];
+  bubble.style.display = "block";
+  dlgIndex = (dlgIndex + 1) % dialogues.length;
+  positionBubble();
+}
+
+// Cache la bulle au clic dessus
+bubble.addEventListener("click", () => {
+  bubble.style.display = "none";
+});
+
+// Affiche bulle au clic sur le bot
+assistant.addEventListener("click", showDialogue);
+
+// Positionne la bulle selon le côté et évite débordements
+function positionBubble() {
+  const containerRect = container.getBoundingClientRect();
+  const bubbleRect = bubble.getBoundingClientRect();
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  if (side === "left") {
+    bubble.style.left = assistant.offsetWidth + 10 + "px";
+    bubble.style.right = "auto";
+
+    // Assure que la bulle ne déborde pas à droite
+    if (containerRect.left + assistant.offsetWidth + 10 + bubbleRect.width > viewportWidth) {
+      bubble.style.left = (viewportWidth - containerRect.left - bubbleRect.width - 10) + "px";
+    }
+
+    // Triangle à gauche
+    bubble.style.setProperty("--triangle-position", "left");
+    bubble.style.setProperty("border-color", "rgba(255,255,255,0.8) transparent transparent transparent");
+    bubble.style.setProperty("left", assistant.offsetWidth + 10 + "px");
+
+    // Triangle styling via ::after
+    bubble.style.removeProperty("right");
+    bubble.style.removeProperty("border-color");
+    // On peut injecter un style ou ajouter un classe plus simple (voir plus bas)
+  } else {
+    bubble.style.right = assistant.offsetWidth + 10 + "px";
+    bubble.style.left = "auto";
+
+    // Assure que la bulle ne déborde pas à gauche
+    if (containerRect.right - assistant.offsetWidth - 10 - bubbleRect.width < 0) {
+      bubble.style.right = (viewportWidth - containerRect.right + assistant.offsetWidth + 10) + "px";
+    }
+
+    // Triangle à droite
+    bubble.style.setProperty("--triangle-position", "right");
+    bubble.style.setProperty("border-color", "rgba(255,255,255,0.8) transparent transparent transparent");
+  }
+}
+
+// Déplace le bot d'un bord à l'autre
+function moveBot() {
+  if (side === "left") {
+    container.style.left = "auto";
+    container.style.right = "20px";
+    side = "right";
+  } else {
+    container.style.right = "auto";
+    container.style.left = "20px";
+    side = "left";
+  }
+  
+  positionBubble();
+}
+
+// Boucles
+setInterval(moveBot, 20000);       // change de côté
+setInterval(showDialogue, 8000);   // nouveau message
+
+function positionBubble() {
+  if (side === "left") {
+    bubble.classList.add("left");
+    bubble.classList.remove("right");
+    bubble.style.left = assistant.offsetWidth + 10 + "px";
+    bubble.style.right = "auto";
+  } else {
+    bubble.classList.add("right");
+    bubble.classList.remove("left");
+    bubble.style.right = assistant.offsetWidth + 10 + "px";
+    bubble.style.left = "auto";
+  }
+}
+
+</script>
+
+
 
 </body>
 </html>

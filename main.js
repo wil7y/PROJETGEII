@@ -49,3 +49,4 @@ document.addEventListener('DOMContentLoaded', () => {
   const txt = el.getAttribute('data-text');
   typeWriter(el, txt, 200);
 });
+

@@ -156,6 +156,58 @@
       animation: scroll 40s linear infinite;
     }
   }
+
+/* BOT FIXÉ EN BAS */
+#bot-container {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 9999;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+#bot-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+#bot-image {
+  width: 60px;
+  height: 60px;
+  transition: transform 0.8s ease-in-out;
+  animation: floatBot 3s infinite;
+}
+
+@keyframes floatBot {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+#bot-dialogue {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9em;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 220px;
+  cursor: pointer;
+  animation: dialogueFade 1s ease;
+}
+
+@keyframes dialogueFade {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
 </style>
 
 </head>
@@ -188,59 +240,202 @@
 </section>
 
 <!-- Historique --> 
-<section>
-  <h2 class="text-2xl font-bold mb-4">Notre histoire</h2>
-  <p class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+<div class="container">
+  <h2 >Notre histoire</h2>
+  <p >
     Fondée au sein de l'IUT de Douala, IUTDLAPCB est née d'une passion commune pour l'innovation et la précision dans la fabrication de circuits imprimés. Depuis nos débuts, nous avons accompagné de nombreux projets académiques, techniques et industriels dans la réalisation de prototypes et de solutions sur mesure. Grâce à notre expertise, nous nous engageons à offrir un service fiable, rapide et à la portée de tous.
   </p>
-</section>
+</div>
  
 <div class="container">
-  <h1>Contactez-Nous</h1>
+  <h1>Contactez-nous</h1>
   <div class="intro">
 
     <h2>Bienvenue sur notre page de contact</h2>
     <p>Notre équipe est prête à vous aider. Découvrez nos responsables ci-dessous, posez vos questions, et retrouvez notre localisation.</p>
   </div>
+  <section class="authority-section">
+  <h2>Sous la Supervison de</h2>
+  <div class="authority-container">
+    <div class="authority-card">
+      <img src="./WhatsApp Image 2025-05-19 à 21.49.28_8910db24.jpg" alt="Autorité 1">
+      <h3>Pr Jacques Etame</h3>
+      <p class="role">Directeur de l'IUT de Douala</p>
+      <p class="quote">"Nous construisons l'avenir avec passion et rigueur."</p>
+    </div>
+    <div class="authority-card">
+      <img src="./WhatsApp Image 2025-05-19 à 21.46.20_d34813d3.jpg" alt="Autorité 2">
+      <h3>Pr Mengata Mengounou</h3>
+      <p class="role">Directeur Adjoint de l'IUT de Douala</p>
+      <p class="quote">"L'innovation est notre moteur, la qualité notre exigence."</p>
+    </div>
+  </div>
+</section>
+<div id="bot-container">
+  <img id="bot-image" src="bot_cligne.png" alt="Bot">
+  <div id="bot-dialogue">Hey !</div>
+</div>
+
+
+<div>.</div>
+<div>.</div>
+<div>.</div>
+  <div class="intro">
+
+    <p><b>Notre équipe technique prêt à vous satisfaire</b></p>
+  </div>
+
   <div class="team-animate">
     <div class="slide-track" id="slideTrack">
       <div class="member">
-        <img src="memb3.jpg" alt="Jean Dupont" />
-        <h3>Jean Dupont</h3>
-        <p>Responsable technique, expert en CNC et fabrication.</p>
+        <img src="./memb3.jpg" alt="Jean Dupont" />
+        <h3>Valery Zeh</h3>
+        <p>Responsable Académique de la filière GEII et Porteur du projet</p>
       </div>
       <div class="member">
         <img src="./membre2.jpg" alt="Marie Curie" />
-        <h3>Marie Curie</h3>
-        <p>Support client et gestion de projet.</p>
+        <h3>Camille Obama</h3>
+        <p>Encadreur du projet CNC Lazer</p>
       </div>
       <div class="member">
         <img src="./memb4.jpg" alt="Alex Martin" />
-        <h3>Alex Martin</h3>
+        <h3>Maurice Meyeng</h3>
         <p>Développeur web et spécialiste en design.</p>
       </div>
       <!-- Répétition pour boucle -->
       <div class="member">
-        <img src="./memb3.jpg" alt="Jean Dupont" />
-        <h3>Jean Dupont</h3>
-        <p>Responsable technique, expert en CNC et fabrication.</p>
+        <img src="./memb1.jpg" alt="Jean Dupont" />
+        <h3>Jacques Evina</h3>
+        <p>Responsable technique CNC</p>
       </div>
       <div class="member">
-        <img src="./membre2.jpg" alt="Marie Curie" />
-        <h3>Marie Curie</h3>
-        <p>Support client et gestion de projet.</p>
+        <img src="./memb3.jpg" alt="Marie Curie" />
+        <h3>Valery Zeh</h3>
+        <p>Responsable Académique de la filière GEII et Porteur du projet</p>
       </div>
       <div class="member">
-        <img src="./memb4.jpg" alt="Alex Martin" />
-        <h3>Alex Martin</h3>
-        <p>Développeur web et spécialiste en design.</p>
+        <img src="./membre2.jpg" alt="Alex Martin" />
+        <h3>Camille Obama</h3>
+        <p>Encadreur du projet CNC Lazer</p>
       </div>
     </div>
   </div>
+<section class="horizontal-team">
+  <h2>Notre Équipe</h2>
+  <div class="carousel-wrapper">
+    <div class="team-carousel" id="carousel">
+      <!-- Répéter pour chaque membre -->
+       <div class="team-card">
+        <img src="./memb4.jpg" alt="Membre 23">
+        <h3>Maurice Meyeng</h3>
+      </div>
+      <div class="team-card">
+        <img src="./eloundou.jpg" alt="Membre 1">
+        <h3>Eloundou Freddy</h3>
+      </div>
+      <div class="team-card">
+        <img src="./junior n.jpg" alt="Membre 2">
+        <h3>Junior Nembot</h3>
+      </div>
+      <div class="team-card">
+        <img src="./evina.jpg" alt="Membre 3">
+        <h3>Evina Loïc</h3>
+      </div>
+      <div class="team-card">
+        <img src="./valdin n.jpg" alt="Membre 4">
+        <h3>Valdin Nana</h3>
+      </div>
+      <div class="team-card">
+        <img src="./daniel f.jpg" alt="Membre 5">
+        <h3>Daniel Fotso</h3>
+      </div>
+      <div class="team-card">
+        <img src="./brondol n.jpg" alt="Membre 6">
+        <h3>Brondol Mbana</h3>
+      </div>
+      <div class="team-card">
+        <img src="./maeu.jpg" alt="Membre 23">
+        <h3>Elisabeth Maleu</h3>
+      </div>
+      
+      <div class="team-card">
+        <img src="./ousman.jpg" alt="Membre 7">
+        <h3>Ousmane Essangui</h3>
+      </div>
+      <div class="team-card">
+        <img src="./ivan k.jpg" alt="Membre 8">
+        <h3>Ivan Kegne</h3>
+      </div>
+      <div class="team-card">
+        <img src="./emmanuel n.jpg" alt="Membre 9">
+        <h3>Emmanuel Nje</h3>
+      </div>
+      <div class="team-card">
+        <img src="./chrislain y.jpg" alt="Membre 10">
+        <h3>Chrislain Ymele</h3>
+      </div>
+      <div class="team-card">
+        <img src="./mboute f.jpg" alt="Membre 11">
+        <h3>Francky Mbouté</h3>
+      </div>
+      <div class="team-card">
+        <img src="./angela .jpg" alt="Membre 12">
+        <h3>Angela Mmag</h3>
+      </div>
+      <div class="team-card">
+        <img src="./morel n.jpg" alt="Membre 13">
+        <h3>Morel Defo</h3>
+      </div>
+      <div class="team-card">
+        <img src="./miguel y.jpg" alt="Membre 14">
+        <h3>Miguel Yemb</h3>
+      </div>
+      <div class="team-card">
+        <img src="./Raoul.jpg" alt="Membre 15">
+        <h3>Raoul Bogodo</h3>
+      </div>
+      <div class="team-card">
+        <img src="./wilfred njofang.jpg" alt="Membre 16">
+        <h3>Wilfried Njofang</h3>
+      </div>
+      <div class="team-card">
+        <img src="./tresor.jpg" alt="Membre 17">
+        <h3>Trésor Ekwe</h3>
+      </div>
+      <div class="team-card">
+        <img src="./ruth.jpg" alt="Membre 18">
+        <h3>Rhut Boladji</h3>
+      </div>
+      <div class="team-card">
+        <img src="./Arnaud.jpg" alt="Membre 19">
+        <h3>Arnaud Njosseu</h3>
+      </div>
+      <div class="team-card">
+        <img src="./Alexis.jpg" alt="Membre 20">
+        <h3>Alexis Tchoundou</h3>
+      </div>
+      <div class="team-card">
+        <img src="./bowen.jpg" alt="Membre 21">
+        <h3>Bowen</h3>
+      </div>
+      <div class="team-card">
+        <img src="./tiwa.jpg" alt="Membre 22">
+        <h3>Tiwa</h3>
+      </div>
+      
+      <!-- Répéter ou dupliquer les éléments pour une boucle fluide -->
+    </div>
+  </div>
+</section>
+
+
+
   <div class="map-section">
     <h2>Notre localisation</h2>
-    <iframe src="https://www.google.com/maps/embed?pb=..." width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1018834.4471994202!2d9.7288192!3d4.0566784!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10610d9f57e93471%3A0x3b731da84fc81386!2sInstitut%20Universitaire%20De%20Technologies%20De%20Douala!5e0!3m2!1sfr!2scm!4v1747685300021!5m2!1sfr!2scm" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
+  <div>.</div>
+  <div>.</div>
   <section class="contact-form">
     <h2>Envoyez-nous un message</h2>
     <form id="contactForm">
@@ -262,6 +457,94 @@
 </div>
 
 <script src="main.js"></script>
+<script>
+  const botContainer = document.getElementById("bot-container");
+  const botImage = document.getElementById("bot-image");
+  const botDialogue = document.getElementById("bot-dialogue");
+  const authorities = document.querySelector(".authority-section"); // mets ici ta vraie classe ou ID
+
+  const botImages = ["bot_cligne.png", "bot_charge.png"];
+  const messages = [
+    "Leur contribution est essentielle pour notre réussite.",
+    "N'hésitez pas à les contacter pour plus d'infos.",
+    "Ils sont toujours à l'écoute !"
+  ];
+
+  let currentImg = 0;
+  let currentMsg = 0;
+  let messageInterval;
+  let imageInterval;
+
+  // Change bot image
+  function startImageLoop() {
+    imageInterval = setInterval(() => {
+      currentImg = (currentImg + 1) % botImages.length;
+      botImage.src = botImages[currentImg];
+    }, 3000);
+  }
+
+  // Change bot dialogue
+  function startMessageLoop() {
+    botDialogue.textContent = messages[currentMsg];
+    messageInterval = setInterval(() => {
+      currentMsg = (currentMsg + 1) % messages.length;
+      botDialogue.textContent = messages[currentMsg];
+    }, 5000);
+  }
+
+  // Stop loops when hidden
+  function stopLoops() {
+    clearInterval(imageInterval);
+    clearInterval(messageInterval);
+    currentMsg = 0;
+  }
+
+  // Check if in view
+  function isInView(element) {
+    const rect = element.getBoundingClientRect();
+    return rect.top < window.innerHeight && rect.bottom > 0;
+  }
+
+  function handleScroll() {
+    if (isInView(authorities)) {
+      if (!botContainer.classList.contains("visible")) {
+        botContainer.classList.add("visible");
+        botDialogue.style.display = "block";
+        startImageLoop();
+        startMessageLoop();
+      }
+    } else {
+      botContainer.classList.remove("visible");
+      botDialogue.style.display = "none";
+      stopLoops();
+    }
+  }
+
+  // Disparition bulle au clic
+  botDialogue.addEventListener("click", () => {
+    botDialogue.style.display = "none";
+  });
+
+  window.addEventListener("scroll", handleScroll);
+
+
+</script>
+
+<script>
+  const cards = document.querySelectorAll('.team-card');
+  cards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      const hue = Math.floor(Math.random() * 360);
+      card.style.backgroundColor = `hsl(${hue}, 70%, 85%)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.backgroundColor = 'white';
+    });
+  });
+</script>
+
+
+
 <!-- API Google Maps -->
 <script async
   src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
@@ -305,7 +588,10 @@
     alert('Message envoyé !');
     this.reset();
   };
+
+  
 </script>
+
 <footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
   <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">
     <!-- Liens pages -->
@@ -317,21 +603,21 @@
     
     <!-- Réseaux sociaux avec icônes Font Awesome -->
     <div style="margin:10px; display:flex; gap:15px; justify-content:center;">
-      <a href="https://facebook.com" target="_blank" style="color:#fff; font-size:20px;">
+      <a href="https://www.facebook.com/profile.php?id=61576195028773" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
         <i class="fab fa-facebook-f"></i>
       </a>
-      <a href="https://twitter.com" target="_blank" style="color:#fff; font-size:20px;">
-        <i class="fab fa-twitter"></i>
+      <a href="+237 6 82 52 42 96" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
+        <i class="fab fa-whatsapp"></i>
       </a>
-      <a href="https://instagram.com" target="_blank" style="color:#fff; font-size:20px;">
-        <i class="fab fa-instagram"></i>
+      <a href="contactiutdlapcb@gmail.com" target="_blank" rel="noopener noreferrer" style="color:#fff; font-size:20px;">
+        <i class="fab fa-linkedin"></i>
       </a>
     </div>
     <br>
     <div class="other">
       <h3 class="text-2xl font-semibold mb-2">Nos coordonnées</h3>
-      <p><strong>Email :</strong> contact@iutdlapcb.com</p>
-      <p><strong>Téléphone :</strong> +237 (657 920 400/678 388 234)</p>
+      <p><strong>Email :</strong>contactiutdlapcb@gmail.com</p>
+      <p><strong>Téléphone :</strong> +237 (657 920 400/698 856 751)</p>
       <p><strong>Adresse :</strong> IUT de Douala, Littoral, Cameroun</p>
     </div>
   </div>
