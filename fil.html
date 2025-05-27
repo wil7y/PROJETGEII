@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Feed Social Firebase + Cloudinary</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+
+
+<style>
+:root {
+  --bg-color: linear-gradient(135deg, #c2e9fb, #a1c4fd);
+  --text-color: #111;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --btn-bg: linear-gradient(45deg, #00c6ff, #0072ff);
+  --btn-color: #fff;
+  --accent: #007bff;
+  --font-hand: 'Caveat', cursive;
+}
+
+body.dark-theme {
+  --bg-color: linear-gradient(135deg, #1e3c72, #2a5298);
+  --text-color: #f2f2f2;
+  --card-bg: rgba(30, 30, 50, 0.85);
+  --btn-bg: linear-gradient(45deg, #4e54c8, #8f94fb);
+  --btn-color: #fff;
+}
+
+* {
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-hand), sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* HEADER */
+header {
+  width: 100%;
+  max-width: 700px;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(6px);
+}
+
+header h1 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+#themeToggleBtn {
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3);
+}
+
+#themeToggleBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 114, 255, 0.4);
+}
+
+/* MAIN */
+main {
+  max-width: 700px;
+  width: 100%;
+  padding: 10px 15px;
+  flex-grow: 1;
+}
+
+/* POST CARD */
+.post-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  margin: 15px 0;
+  padding: 15px;
+  backdrop-filter: blur(4px);
+}
+
+.post-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.post-header img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-header .username {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.post-header .date {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.post-text {
+  margin-top: 12px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.post-image {
+  margin-top: 10px;
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-actions {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.like-btn {
+  cursor: pointer;
+  user-select: none;
+  color: #666;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.like-btn.liked {
+  color: #e0245e;
+  font-weight: 700;
+}
+
+.like-count {
+  font-size: 1rem;
+}
+
+/* FORMULAIRE DE POST */
+#newPostForm {
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+#newPostForm textarea {
+  width: 100%;
+  height: 80px;
+  resize: vertical;
+  font-size: 1.1rem;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+#newPostForm input[type="file"] {
+  margin-top: 15px;
+  background-color: transparent;
+  padding: 10px;
+  font-family: inherit;
+  border: 2px dashed #aaa;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #555;
+  width: 100%;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+#newPostForm input[type="file"]:hover {
+  background-color: rgba(0, 123, 255, 0.05);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+#newPostForm button {
+  margin-top: 15px;
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(0, 114, 255, 0.2);
+  font-size: 1.1rem;
+  font-family: inherit;
+}
+
+#newPostForm button:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 16px rgba(0, 114, 255, 0.3);
+}
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  main {
+    padding: 10px;
+  }
+
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .post-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .post-header .date {
+    margin-left: 0;
+  }
+}
+
+
+</style>
+
+<!-- Firebase JS SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+</head>
+<body>
+
+<header>
+  <h1>Mon Fil Social</h1>
+  <button id="themeToggleBtn">Thème Sombre</button>
+</header>
+
+<main>
+
+  <form id="newPostForm">
+    <textarea id="postText" placeholder="Exprimez vous ?" required></textarea>
+    <input type="file" id="postImage" accept="image/*" />
+    <button type="submit">Publier</button>
+  </form>
+
+  <div id="postsContainer">
+    <!-- Les posts seront injectés ici -->
+  </div>
+  <div class="post" id="post-${postId}">
+  <!-- contenu du post ici -->
+</div>
+
+
+</main>
+
+<script>
+  // --- CONFIGURATION A REMPLACER ---
+  const firebaseConfig = {
+  apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
+  authDomain: "cnc2-bca09.firebaseapp.com",
+  projectId: "cnc2-bca09",
+  storageBucket: "cnc2-bca09.firebasestorage.app",
+  messagingSenderId: "680616207738",
+  appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+  measurementId: "G-RGD9YN5HNS"
+};
+  const cloudinaryCloudName = "dqsw2byfi";
+  const cloudinaryUploadPreset = "gerber_upload";
+
+  // ---------------------
+
+  // INIT FIREBASE
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // Stockage temporaire utilisateur connecté
+  let currentUser = null;
+
+  // Gestion thème clair/sombre
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  function loadTheme() {
+    const theme = localStorage.getItem('theme') || 'light';
+    if(theme === 'dark') {
+      document.body.classList.add('dark-theme');
+      themeToggleBtn.textContent = 'Thème Clair';
+    } else {
+      document.body.classList.remove('dark-theme');
+      themeToggleBtn.textContent = 'Thème Sombre';
+    }
+  }
+  themeToggleBtn.onclick = () => {
+    if(document.body.classList.contains('dark-theme')) {
+      localStorage.setItem('theme', 'light');
+    } else {
+      localStorage.setItem('theme', 'dark');
+    }
+    loadTheme();
+  }
+  loadTheme();
+
+  // Upload image sur Cloudinary
+  async function uploadToCloudinary(file) {
+    const url = `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/upload`;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', cloudinaryUploadPreset);
+
+    const res = await fetch(url, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await res.json();
+    return data.secure_url; // url accessible de l'image
+  }
+
+  // Format date locale sympa
+  function formatDate(timestamp) {
+    if(!timestamp) return '';
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleString(undefined, {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  }
+  
+
+
+  // Affiche posts dans la page
+  const postsContainer = document.getElementById('postsContainer');
+
+  function createPostCard(postId, postData) {
+    const div = document.createElement('div');
+div.className = 'post-card';
+
+const dateStr = formatDate(postData.createdAt);
+
+// Valeurs par défaut
+let userPhoto = 'https://via.placeholder.com/40?text=User';
+let userName = 'Utilisateur';
+
+// Charger l'utilisateur depuis Firestore
+db.collection('users').doc(postData.userId).get().then(userDoc => {
+  if (userDoc.exists) {
+    const userData = userDoc.data();
+    userPhoto = userData.avatar || userPhoto;
+    userName = userData.username || userName;
+  }
+
+  div.innerHTML = `
+    <div class="post-header">
+      <img src="${userPhoto}" alt="Profil" />
+      <div class="username">${userName}</div>
+      <div class="date">${dateStr}</div>
+    </div>
+    <div class="post-text">${escapeHtml(postData.text)}</div>
+    ${postData.imageURL ? `<img class="post-image" src="${postData.imageURL}" alt="Image post" />` : ''}
+    <div class="post-actions">
+      <div class="like-btn" data-postid="${postId}">
+        ❤️ <span class="like-count">${postData.reactionsCount?.like || 0}</span>
+      </div>
+    </div>
+  `;
+
+  // Gestion du like
+  const likeBtn = div.querySelector('.like-btn');
+  likeBtn.onclick = () => toggleLike(postId);
+  checkIfLiked(postId).then(liked => {
+    if(liked) likeBtn.classList.add('liked');
+  });
+});
+
+return div;
+
+  }
+
+  // Echappement simple pour éviter injection HTML
+  function escapeHtml(text) {
+    return text.replace(/[&<>"']/g, function(m) {
+      return ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[m];
+    });
+  }
+
+  // Charger les posts depuis Firestore en temps réel
+  function loadPosts() {
+    db.collection('posts')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(snapshot => {
+        postsContainer.innerHTML = '';
+        snapshot.forEach(doc => {
+          const postCard = createPostCard(doc.id, doc.data());
+          postsContainer.appendChild(postCard);
+        });
+      });
+  }
+
+  // Vérifier si user a liké un post (dans sous-collection reactions)
+  async function checkIfLiked(postId) {
+    if(!currentUser) return false;
+    const doc = await db.collection('posts').doc(postId)
+      .collection('reactions').doc(currentUser.uid).get();
+    return doc.exists && doc.data().type === 'like';
+  }
+
+  // Toggle like sur un post
+  async function toggleLike(postId) {
+    if(!currentUser) {
+      alert('Vous devez être connecté pour liker.');
+      return;
+    }
+    const reactionRef = db.collection('posts').doc(postId)
+      .collection('reactions').doc(currentUser.uid);
+    const postRef = db.collection('posts').doc(postId);
+
+    const doc = await reactionRef.get();
+
+    if(doc.exists && doc.data().type === 'like') {
+      // Supprimer like
+      await reactionRef.delete();
+      await postRef.update({
+        'reactionsCount.like': firebase.firestore.FieldValue.increment(-1)
+      });
+    } else {
+      // Ajouter like
+      await reactionRef.set({
+        type: 'like',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      await postRef.update({
+        'reactionsCount.like': firebase.firestore.FieldValue.increment(1)
+      });
+    }
+  }
+
+  // Gestion formulaire création post
+  const newPostForm = document.getElementById('newPostForm');
+  newPostForm.onsubmit = async (e) => {
+    e.preventDefault();
+    if(!currentUser) {
+      alert('Vous devez être connecté pour publier.');
+      return;
+    }
+
+    const text = document.getElementById('postText').value.trim();
+    if(!text) {
+      alert('Le texte ne peut pas être vide.');
+      return;
+    }
+
+    const fileInput = document.getElementById('postImage');
+    const file = fileInput.files[0];
+
+    // Désactiver bouton pendant upload
+    const btn = newPostForm.querySelector('button');
+    btn.disabled = true;
+    btn.textContent = 'Publication en cours...';
+
+    try {
+      let imageURL = '';
+      if(file) {
+        imageURL = await uploadToCloudinary(file);
+      }
+
+      const user = firebase.auth().currentUser;
+const userDoc = await db.collection('users').doc(user.uid).get();
+const userName = userDoc.exists ? userDoc.data().username : 'User';
+
+      await db.collection('posts').add({
+        userId: user.uid,
+        userName: userName, 
+        userPhotoURL: user.avatar || '',
+        text: text,
+        imageURL: imageURL,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        reactionsCount: {},
+        commentsCount: 0
+      });
+
+      newPostForm.reset();
+    } catch (err) {
+      alert('Erreur lors de la publication : ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Publier';
+    }
+  };
+
+  // Auth écouteur - récupère currentUser
+     auth.onAuthStateChanged(user => {
+      currentUser = user;
+      if(!user) {
+        // Ici, tu peux rediriger vers page login ou afficher un message
+        console.log('Utilisateur non connecté');
+      } else {
+        console.log('Utilisateur connecté :', user.displayName || user.email);
+        loadPosts();
+      }
+    });
+    
+</script>
+
+</body>
+</html>

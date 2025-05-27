@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="logo.png" type="image/png">
+<title>Enregistrement</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background-color: #000;
+  }
+
+  /* Video de fond */
+  #bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+
+  /* Overlay pour lisibilité */
+  .overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); /* semi-transparent noir */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 3em;
+    color: #fff;
+    margin-bottom: 20px;
+    animation: fadeInDown 1s ease-out;
+  }
+
+  p {
+    font-size: 1.2em;
+    color: #ddd;
+    margin-bottom: 40px;
+    max-width: 600px;
+    line-height: 1.5;
+    animation: fadeInUp 1s ease-out;
+  }
+
+  .btn {
+    padding: 15px 30px;
+    margin: 10px;
+    border: 2px solid #fff;
+    border-radius: 30px;
+    background: transparent;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .btn:hover {
+    background-color: #fff;
+    color: #000;
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 2em;
+    }
+    p {
+      font-size: 1em;
+    }
+    .btn {
+      padding: 12px 25px;
+      font-size: 0.9em;
+    }
+  }
+</style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="logo.png"  class="logo" />
+    </div>
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="catalog.html">Catalogue</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="presentation.html" class="join-btn" target="_blank">
+  🤝 Rejoindre la communauté
+</a></li>
+
+      </ul>
+    </nav>
+    <!-- Menu burger pour mobile -->
+    <div class="burger" id="burger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+<!-- Vidéo de fond -->
+<video id="bg-video" autoplay muted loop playsinline>
+  <source src="https://videos.pexels.com/video-files/3466611/3466611-hd_1920_1080_30fps.mp4" type="video/mp4" />
+  Votre navigateur ne supporte pas la vidéo.
+</video>
+
+<!-- Overlay avec contenu -->
+<div class="overlay">
+  <h1>Bienvenue sur ...</h1>
+  <p>Connectez-vous ou inscrivez-vous pour rejoindre la communauté.</p>
+  <div>
+    <a href="login.html" class="btn">Se connecter</a>
+    <a href="register.html" class="btn">S'inscrire</a>
+  </div>
+</div>
+
+</body>
+</html>

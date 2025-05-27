@@ -149,10 +149,7 @@ onAuthStateChanged(auth, user => {
     if (user.email === adminEmail) {
       // Si c'est l'admin, on va vers la page admin
       window.location.href = "admin.html"; // Modifier si nécessaire
-    } else{
-      // Sinon, vers la page accueil
-    window.location.href = "index.html"; // Modifier si nécessaire
-    }
+    } 
     
     }
   }

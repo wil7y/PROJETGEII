@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="styles.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <link rel="icon" href="logo.png" type="image/png">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -113,6 +115,11 @@ button.delete-btn {
     text-decoration: underline;
 }
 
+h1, h2, .upload-label {
+  font-family: 'Pacifico', cursive;
+}
+
+
 </style>
 </head>
 <body>
@@ -125,8 +132,7 @@ button.delete-btn {
         <li><a href="index.html">Accueil</a></li>
         <li><a href="catalog.html">Catalogue</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="forum.html">Forum</a></li>
-        <li><a href="connexion.html">Sign up/Sign in</a></li>
+        <li><a href="presentation.html">Sign up/Sign in</a></li>
       </ul>
     </nav>
     <!-- Menu burger pour mobile -->
@@ -140,10 +146,7 @@ button.delete-btn {
 
 <h1>Page Administrateur</h1>
 
-<div id="auth-section">
-  <button id="btn-login">Se connecter</button>
-  <button id="btn-logout" style="display:none;">Déconnexion</button>
-</div>
+
 
 <div id="visites">📊Chargement du nombre de visiteurs...</div>
 <div>.</div>
@@ -186,31 +189,7 @@ const adminEmail = "admin@example.com"; // Modifier ici
 const btnLogin = document.getElementById('btn-login');
 const btnLogout = document.getElementById('btn-logout');
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    if (user.email === adminEmail) {
-      document.getElementById('btn-logout').style.display='inline';
-      loadVisiteurs();
-      loadMessages();
-      loadCommandes();
-    } else {
-      alert("Accès refusé. Vous n'êtes pas admin.");
-      signOut(auth);
-    }
-  } else {
-    document.getElementById('btn-logout').style.display='none';
-  }
-});
 
-document.getElementById('btn-login').onclick = () => {
-  const email = prompt("Email de l'admin :");
-  const password = prompt("Mot de passe :");
-  signInWithEmailAndPassword(auth, email, password).catch(e => alert('Erreur : ' + e.message));
-};
-
-document.getElementById('btn-logout').onclick = () => {
-  signOut(auth);
-};
 
 // Charger le nombre de visiteurs du jour
 async function loadVisiteurs() {

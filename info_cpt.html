@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mon Compte</title>
+  <style>
+    /* RESET & BASE */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+    /* THEMES */
+    body[data-theme="clair"] {
+      --bg: #f0f2f5;
+      --text: #050505;
+      --card-bg: #fff;
+      --border-color: #ddd;
+      --input-bg: #fff;
+      --input-text: #050505;
+      --button-bg: #1877f2;
+      --button-text: #fff;
+      --button-border: #1877f2;
+      --button-hover-bg: #165ec9;
+    }
+    body[data-theme="sombre"] {
+      --bg: #18191a;
+      --text: #e4e6eb;
+      --card-bg: #242526;
+      --border-color: #3a3b3c;
+      --input-bg: #3a3b3c;
+      --input-text: #e4e6eb;
+      --button-bg: #3a3b3c;
+      --button-text: #e4e6eb;
+      --button-border: #3a3b3c;
+      --button-hover-bg: #4e4f50;
+    }
+    body[data-theme="bleu"] {
+      --bg: #0d1b2a;
+      --text: #e0e1dd;
+      --card-bg: #1b263b;
+      --border-color: #415a77;
+      --input-bg: #415a77;
+      --input-text: #e0e1dd;
+      --button-bg: #778da9;
+      --button-text: #0d1b2a;
+      --button-border: #778da9;
+      --button-hover-bg: #a1c9f1;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--card-bg);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 12px 24px;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      user-select: none;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* MAIN CONTAINER */
+    main {
+      flex: 1;
+      display: flex;
+      gap: 24px;
+      max-width: 960px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    /* COLONNE GAUCHE : PROFIL */
+    #profile {
+      background: var(--card-bg);
+      padding: 24px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    #avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: var(--border-color);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    #avatar:hover {
+      transform: scale(1.1);
+    }
+
+    #username {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      word-break: break-word;
+    }
+
+    #logoutBtn {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.3s ease;
+    }
+    #logoutBtn:hover {
+      background: var(--button-hover-bg);
+    }
+
+    /* COLONNE DROITE : MESSAGES + ENVOI */
+    #messages-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    #messages {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px 20px;
+      height: 450px;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      color: var(--text);
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    #messages > div {
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      background: var(--input-bg);
+      border-radius: 16px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+      word-break: break-word;
+    }
+
+    #new-message {
+      display: flex;
+      gap: 12px;
+    }
+
+    #new-message input {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 24px;
+      border: 1.5px solid var(--border-color);
+      font-size: 1.1rem;
+      background: var(--input-bg);
+      color: var(--input-text);
+      transition: border-color 0.3s ease;
+    }
+    #new-message input::placeholder {
+      color: var(--border-color);
+    }
+    #new-message input:focus {
+      border-color: var(--button-border);
+      outline: none;
+    }
+
+    #new-message button {
+      background: var(--button-bg);
+      color: var(--button-text);
+      border: none;
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-radius: 24px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.3s ease;
+    }
+    #new-message button:hover {
+      background: var(--button-hover-bg);
+    }
+
+    /* SELECTEUR THEME */
+    #theme-selector {
+      max-width: 960px;
+      margin: 0 auto 40px;
+      background: var(--card-bg);
+      padding: 18px 24px;
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    #theme {
+      padding: 8px 14px;
+      border-radius: 12px;
+      border: 1.8px solid var(--border-color);
+      background: var(--input-bg);
+      color: var(--input-text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: border-color 0.3s ease;
+    }
+    #theme:hover,
+    #theme:focus {
+      border-color: var(--button-border);
+      outline: none;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+        margin: 12px auto;
+        max-width: 95vw;
+        gap: 16px;
+      }
+      #profile {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 16px 20px;
+        align-items: center;
+      }
+      #avatar {
+        width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+      }
+      #username {
+        font-size: 1.3rem;
+        flex: 1;
+        margin-left: 16px;
+        text-align: left;
+      }
+      #logoutBtn {
+        width: auto;
+        padding: 10px 16px;
+        font-size: 1rem;
+        border-radius: 16px;
+      }
+      #messages {
+        height: 350px;
+      }
+    }
+
+   #sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background: #04617b;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+  overflow-y: auto;
+  padding: 10px;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+/* Sidebar cachée : on la décale à gauche (hors écran) */
+.sidebar-closed {
+  transform: translateX(-260px);
+}
+
+/* Sidebar visible */
+.sidebar-open {
+  transform: translateX(0);
+}
+
+/* Bouton toggle */
+#toggleSidebar {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1100;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#photo-change-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+#photo-change-container input[type="file"] {
+  width: 150px;     /* taille réduite */
+  padding: 4px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border-color);
+  background: var(--input-bg);
+  color: var(--input-text);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+#photo-change-container button {
+  width: 150px;     /* taille réduite */
+  padding: 8px 0;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease;
+}
+
+#photo-change-container button:hover {
+  background: var(--button-hover-bg);
+}
+
+
+  </style>
+</head>
+
+<body data-theme="clair">
+    
+  <header>Mon Compte</header>
+  <br>
+  <br>
+  <!-- Bouton flèche -->
+<button id="toggleSidebar" aria-label="Afficher la sidebar">☰</button>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar-closed">
+  <h3>Utilisateurs</h3>
+  <div id="usersList"></div>
+</div>
+
+  
+
+
+  <main>
+    <!-- Colonne gauche : Profil -->
+    <section id="profile" aria-label="Profil utilisateur">
+      <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Photo de profil utilisateur" id="avatar" />
+      <div id="username">Nom d'utilisateur</div>
+      <button id="logoutBtn" aria-label="Se déconnecter">Déconnexion</button>
+    </section>
+
+    <!-- Colonne droite : Messages -->
+    <section id="messages-container" aria-label="Zone de discussion">
+      <div id="messages" aria-live="polite" aria-relevant="additions">
+        <!-- Les messages apparaissent ici -->
+      </div>
+
+      <form id="new-message" aria-label="Envoyer un nouveau message" autocomplete="off">
+        <input type="text" id="message-input" name="message" placeholder="Entrez votre message..." aria-required="true" />
+        <button type="submit">Envoyer</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Sélecteur de thème -->
+  <div id="theme-selector">
+    <label for="theme">Thème : </label>
+    <select id="theme" name="theme" aria-label="Sélection du thème">
+      <option value="clair">Clair</option>
+      <option value="sombre">Sombre</option>
+      <option value="bleu">Bleu</option>
+    </select>
+  </div>
+
+  
+<div id="change-photo-container">
+  <input type="file" id="fileInput" accept="image/*" />
+  <button id="uploadBtn">Changer photo de profil</button>
+</div>
+
+
+
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+import { getAuth, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
+    authDomain: "cnc2-bca09.firebaseapp.com",
+    projectId: "cnc2-bca09",
+    storageBucket: "cnc2-bca09.firebasestorage.app",
+    messagingSenderId: "680616207738",
+    appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+    measurementId: "G-RGD9YN5HNS"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const usernameSpan = document.getElementById('username');
+const avatarImg = document.getElementById('avatar');
+const logoutBtn = document.getElementById('logoutBtn');
+const fileInput = document.getElementById('fileInput');
+const uploadBtn = document.getElementById('uploadBtn');
+
+let currentUser = null;
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    usernameSpan.textContent = user.email || user.displayName || "Utilisateur";
+
+    // Mettre à jour le statut online à true
+    await setDoc(doc(db, "users", user.uid), { online: true }, { merge: true });
+
+    // récupérer photo profil etc...
+
+    // Écouter la fermeture/fenêtre quittée
+    window.addEventListener('beforeunload', async () => {
+      await setDoc(doc(db, "users", user.uid), { online: false }, { merge: true });
+    });
+
+  } else {
+    window.location.href = "connexion.html";
+  }
+});
+
+logoutBtn.onclick = async () => {
+  if (currentUser) {
+    await setDoc(doc(db, "users", currentUser.uid), { online: false }, { merge: true });
+  }
+  signOut(auth).then(() => {
+    window.location.href = "connexion.html";
+  });
+};
+
+
+uploadBtn.onclick = async () => {
+  if (!fileInput.files.length) {
+    alert("Veuillez choisir une image");
+    return;
+  }
+  if (!currentUser) {
+    alert("Utilisateur non connecté");
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const cloudName = 'dqsw2byfi';
+  const unsignedUploadPreset = "gerber_upload";
+  const url = `https://api.cloudinary.com/v1_1/${cloudName}/upload`;
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', unsignedUploadPreset);
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await res.json();
+    console.log('Réponse Cloudinary:', data);
+
+    if (data.secure_url) {
+      await setDoc(doc(db, "users", currentUser.uid), {
+        urlPhotoProfil: data.secure_url
+      }, { merge: true });
+      console.log("URL photo de profil sauvegardée dans Firestore :", data.secure_url);
+
+      avatarImg.src = data.secure_url + '?t=' + new Date().getTime();
+      alert("Photo de profil mise à jour !");
+      fileInput.value = "";
+    } else {
+      alert("Erreur lors de l'upload de l'image");
+    }
+  } catch (error) {
+    alert("Erreur : " + error.message);
+  }
+};
+
+
+const themeSelector = document.getElementById('theme');
+themeSelector.value = document.body.getAttribute('data-theme');
+
+themeSelector.addEventListener('change', () => {
+  document.body.setAttribute('data-theme', themeSelector.value);
+  localStorage.setItem('theme', themeSelector.value);
+});
+
+// Au chargement de la page
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+  document.body.setAttribute('data-theme', savedTheme);
+  themeSelector.value = savedTheme;
+}
+
+import { collection, query, onSnapshot } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+const usersListContainer = document.getElementById('usersList');
+
+function renderUsers(users) {
+  usersListContainer.innerHTML = '';
+  users.forEach(user => {
+    const div = document.createElement('div');
+    div.classList.add('user-item');
+
+    const avatar = document.createElement('img');
+    avatar.src = user.urlPhotoProfil || 'default-avatar.png';
+    avatar.classList.add('user-avatar');
+    if (user.online) {
+      avatar.classList.add('online'); // ajouter classe pour cercle vert
+    }
+
+    const name = document.createElement('span');
+    name.textContent = user.displayName || user.email || "Utilisateur";
+
+    div.appendChild(avatar);
+    div.appendChild(name);
+    usersListContainer.appendChild(div);
+  });
+}
+
+const q = query(collection(db, 'users'));
+
+onSnapshot(q, (snapshot) => {
+  const users = snapshot.docs.map(doc => {
+    return { id: doc.id, ...doc.data() };
+  });
+  renderUsers(users);
+});
+
+const toggleBtn = document.getElementById('toggleSidebar');
+const sidebar = document.getElementById('sidebar');
+
+toggleBtn.addEventListener('click', (e) => {
+  e.stopPropagation(); // empêche la propagation pour ne pas fermer tout de suite
+  sidebar.classList.toggle('sidebar-open');
+  sidebar.classList.toggle('sidebar-closed');
+});
+
+// Clic ailleurs ferme la sidebar
+document.addEventListener('click', (e) => {
+  if (!sidebar.classList.contains('sidebar-closed')) {
+    // si sidebar visible et qu'on clique en dehors
+    if (!sidebar.contains(e.target) && e.target !== toggleBtn) {
+      sidebar.classList.remove('sidebar-open');
+      sidebar.classList.add('sidebar-closed');
+    }
+  }
+});
+
+</script>
+
+</body>
+</html>

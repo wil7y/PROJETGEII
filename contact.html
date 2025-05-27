@@ -2,6 +2,8 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Contact & Équipe</title>
 <link rel="stylesheet" href="styles.css" />
@@ -294,7 +296,7 @@
       </div>
       <div class="member">
         <img src="./memb1.jpg" alt="Jean Dupont" />
-        <h3>Jacques Evina</h3>
+        <h3>Josky Evina</h3>
         <p>Responsable technique CNC</p>
       </div>
       <div class="member">
@@ -439,7 +441,7 @@
   <div>.</div>
   <section class="contact-form">
     <h2>Envoyez-nous un message</h2>
-    <form id="contactForm">
+    <form id="contactForm" action="https://formspree.io/f/toncode" method="POST">
       <div class="form-group">
         <label for="name">Nom</label>
         <input type="text" id="name" required />
@@ -601,6 +603,7 @@
       <a href="index.html" style="color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;">Accueil</a>
       <!-- Ajoutez d'autres liens si nécessaire -->
     </div>
+    <li><a href="connexion.html">Opérateur </a></li>
     
     <!-- Réseaux sociaux avec icônes Font Awesome -->
     <div style="margin:10px; display:flex; gap:15px; justify-content:center;">

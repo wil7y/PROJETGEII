@@ -30,23 +30,4 @@ document.addEventListener('click', (event) => {
   }
 });
 
-function typeWriter(element, text, speed = 200) {
-  let i = 0;
-  element.innerHTML = '';
-  const interval = setInterval(() => {
-  if (i < text.length) {
-      element.innerHTML += text.charAt(i);
-      i++;
-  } else {
-      clearInterval(interval);
-  }
-  }, speed);
-}
-  
-// Exécuter après que le DOM est chargé
-document.addEventListener('DOMContentLoaded', () => {
-  const el = document.querySelector('.typewriter');
-  const txt = el.getAttribute('data-text');
-  typeWriter(el, txt, 200);
-});
 

@@ -16,6 +16,9 @@
 </div>
 
 
+
+
+
 </head>
 <body>
   <!-- En-tête avec navigation -->
@@ -28,8 +31,11 @@
         <li><a href="index.html">Accueil</a></li>
         <li><a href="catalog.html">Catalogue</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="forum.html">Forum</a></li>
-        <li><a href="connexion.html">Sign up/Sign in</a></li>
+        
+        <li><a href="presentation.html" class="join-btn" target="_blank">
+  🤝 Rejoindre la communauté
+</a></li>
+
       </ul>
     </nav>
     <!-- Menu burger pour mobile -->
@@ -76,6 +82,34 @@
     </div>
   </section>
 
+  <br>
+<br>
+  <section class="features" data-aos="fade-up">
+     <div class="comment-section">
+    <h2>N'hesitez pas à nous laisser un commentaire &#128526;</h2>
+    <br>
+    <div id="comments-container"></div>
+    <button id="openModal">Commenter</button>
+  </div>
+
+  <!-- Modal -->
+  <div id="commentModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Laisser un commentaire</h3>
+      <form id="commentForm">
+        <input type="text" id="pseudo" placeholder="Votre pseudo" required />
+        <textarea id="message" placeholder="Votre message" required></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+    </div>
+  </div>
+  <br>
+  <br>
+
+  </section>
+
+
   <!-- Pied de page -->
 <!-- Footer stylé noir avec liens et réseaux sociaux -->
 <footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
@@ -114,10 +148,110 @@
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
   <!-- Scripts JS -->
   <script src="main.js" defer></script>
-  <!-- Firebase App (nécessaire) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-<!-- Firestore -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
+
+<script type="module">
+  // Import des fonctions Firebase (API modulaire)
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
+import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js';
+
+// Configuration Firebase (à remplacer par tes clés)
+const firebaseConfig = {
+  apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
+  authDomain: "cnc2-bca09.firebaseapp.com",
+  projectId: "cnc2-bca09",
+  storageBucket: "cnc2-bca09.firebasestorage.app",
+  messagingSenderId: "680616207738",
+  appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+  measurementId: "G-RGD9YN5HNS"
+};
+
+// Initialisation Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Récupération des éléments du DOM
+const commentsContainer = document.getElementById('comments-container');
+const openModalBtn = document.getElementById('openModal');
+const modal = document.getElementById('commentModal');
+const closeModalBtn = modal.querySelector('.close');
+const commentForm = document.getElementById('commentForm');
+const pseudoInput = document.getElementById('pseudo');
+const messageInput = document.getElementById('message');
+
+// Fonction d’échappement HTML simple pour éviter injection
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Fonction pour afficher les commentaires depuis Firestore
+function renderComments(snapshot) {
+  commentsContainer.innerHTML = '';
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    const comment = document.createElement('div');
+    comment.classList.add('comment');
+
+    const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(data.pseudo)}&background=random&color=fff&rounded=true&size=40`;
+
+    comment.innerHTML = `
+      <img src="${avatarUrl}" alt="avatar" class="avatar" />
+      <div class="comment-content">
+        <div class="comment-header">${escapeHtml(data.pseudo)} - <small>${data.date ? new Date(data.date.seconds * 1000).toLocaleString() : '...'}</small></div>
+        <div class="comment-text">${escapeHtml(data.message)}</div>
+      </div>
+    `;
+    commentsContainer.appendChild(comment);
+  });
+}
+
+// Ecoute en temps réel de la collection comments, triée par date décroissante
+const commentsQuery = query(collection(db, 'comments'), orderBy('date', 'desc'));
+onSnapshot(commentsQuery, renderComments);
+
+// Gestion ouverture et fermeture du modal
+openModalBtn.addEventListener('click', () => {
+  modal.style.display = 'block';
+  pseudoInput.focus();
+});
+closeModalBtn.addEventListener('click', () => {
+  modal.style.display = 'none';
+});
+window.addEventListener('click', e => {
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+
+// Soumission d’un nouveau commentaire
+commentForm.addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const pseudo = pseudoInput.value.trim();
+  const message = messageInput.value.trim();
+
+  if (!pseudo || !message) {
+    alert('Veuillez remplir tous les champs');
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, 'comments'), {
+      pseudo,
+      message,
+      date: serverTimestamp()
+    });
+    commentForm.reset();
+    modal.style.display = 'none';
+  } catch (error) {
+    alert('Erreur lors de l\'envoi du commentaire : ' + error.message);
+  }
+});
+
+
+
+</script>
 <script>
 
   const assistant    = document.getElementById("assistant");
@@ -218,7 +352,7 @@ function moveBot() {
 
 // Boucles
 setInterval(moveBot, 20000);       // change de côté
-setInterval(showDialogue, 8000);   // nouveau message
+setInterval(showDialogue, 10000);   // nouveau message
 
 function positionBubble() {
   if (side === "left") {
@@ -235,7 +369,6 @@ function positionBubble() {
 }
 
 </script>
-
 
 
 </body>
