@@ -87,20 +87,46 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+
+.slider {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+}
+.slider img {
+  width: 100%;
+  height: auto;
+  transition: opacity 0.5s;
+}
+.slider .prev, .slider .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffffcc;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+}
+.slider .prev { left: 5px; }
+.slider .next { right: 5px; }
+
+
 </style>
 </head>
 <body>
   <header>
     <div class="logo-container">
-      <img src="logo.jpg"  class="logo" />
+      <img src="logo.png"  class="logo" />
     </div>
     <nav class="nav-menu">
       <ul>
         <li><a href="index.html">Accueil</a></li>
         <li><a href="catalog.html">Catalogue</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="forum.html">Forum</a></li>
-        <li><a href="connexion.html">Sign up/Sign in</a></li>
+        <li><a href="presentation.html" class="join-btn" target="_blank">
+  🤝 Notre communauté
+</a></li>
       </ul>
     </nav>
     <!-- Menu burger pour mobile -->
@@ -150,11 +176,13 @@ const db = getFirestore(app);
 // Exemple de services (peuvent venir de Firestore ou en dur)
 const services = [
   { id: 1, title: "Gravure CNC de circuits imprimés", description: "Gravure de vos designs avec une précision micrométrique.",
-   image: "IMG-20250505-WA0005.png" },
+   image: ["IMG-20250505-WA0005.png" , "gravure.png"]},
   { id: 2, title: "Sérigraphie   &    perçage", description: "Marquage, perçage et finition de vos PCBs selon les normes.",
-   image: "IMG-20250505-WA0006.png" },
+   image: ["IMG-20250505-WA0006.png", "sérigraphie.png"] },
   { id: 3, title: "Assemblage de composants", description: "Montage manuel ou semi-automatisé de composants CMS et traversants.", 
-  image: "IMG-20250505-WA0008.png" },
+  image:["IMG-20250505-WA0008.png", "assemblage.png"]  },
+  { id: 4, title: "gravure sur bijoux", description: "Gravez vos bijoux ", 
+  image:["bijoux.png" , "gravure_bijoux.png"] },
   // Ajoutez d'autres services
 ];
 
@@ -166,11 +194,16 @@ function afficherServices() {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
-      <img src="${s.image}" alt="${s.title}">
-      <h3>${s.title}</h3>
-      <p>${s.description}</p>
-      <button data-id="${s.id}">Passer commande</button>
-    `;
+  <div class="slider" id="slider-${s.id}">
+    ${s.image.map((img, idx) => `
+      <img src="${img}" style="display: ${idx === 0 ? 'block' : 'none'};">
+    `).join('')}
+  </div>
+  <h3>${s.title}</h3>
+  <p>${s.description}</p>
+  <button data-id="${s.id}">Passer commande</button>
+`;
+
     card.querySelector('button').onclick = () => {
       // Aller à la page commande avec l'id du service
       window.location.href = `service.html?service=${s.id}`;
@@ -191,6 +224,30 @@ document.getElementById('searchInput').oninput = () => {
     }
   });
 };
+
+
+const slideIndices = {};
+
+function changeSlide(serviceId, n) {
+  const slider = document.getElementById(`slider-${serviceId}`);
+  const slides = slider.querySelectorAll('img');
+
+  // Initialisation si nécessaire
+  if (slideIndices[serviceId] == null) {
+    slideIndices[serviceId] = 0;
+  }
+
+  slides[slideIndices[serviceId]].style.display = 'none';
+  slideIndices[serviceId] = (slideIndices[serviceId] + n + slides.length) % slides.length;
+  slides[slideIndices[serviceId]].style.display = 'block';
+}
+
+// Défilement automatique toutes les 5 secondes
+setInterval(() => {
+  services.forEach(s => changeSlide(s.id, 1));
+}, 5000);
+
+
 
 afficherServices();
 </script>

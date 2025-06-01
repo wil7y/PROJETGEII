@@ -74,15 +74,16 @@ input[type="file"] { margin: 20px; }
 <body>
   <header>
     <div class="logo-container">
-      <img src="logo.jpg"  class="logo" />
+      <img src="logo.png"  class="logo" />
     </div>
     <nav class="nav-menu">
       <ul>
         <li><a href="index.html">Accueil</a></li>
         <li><a href="catalog.html">Catalogue</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="forum.html">Forum</a></li>
-        <li><a href="connexion.html">Sign up/Sign in</a></li>
+        <li><a href="presentation.html" class="join-btn" target="_blank">
+  🤝 Notre communauté
+</a></li>
       </ul>
     </nav>
     <!-- Menu burger pour mobile -->
@@ -146,7 +147,8 @@ const serviceId = urlParams.get('service');
 const services = [
   { id: 1, title: "Découpe CNC" },
   { id: 2, title: "Gravure CNC" },
-  { id: 3, title: "Fraisage CNC" }
+  { id: 3, title: "Fraisage CNC" },
+  { id: 4, title: "Gravure sur bijoux"}
 ];
 // Trouver le service
 const service = services.find(s => s.id == serviceId);

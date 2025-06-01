@@ -10,115 +10,163 @@
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
 <style>
+:root {
+  --bg: #000;
+  --text: #fff;
+  --accent: #555;
+  --card-bg: #111;
+  --card-border: #222;
+  --hover: #1a1a1a;
+  --highlight: #333;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #eef2f3;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg);
+  color: var(--text);
   margin: 0;
-  padding: 20px;
+  padding: 40px 20px;
+  line-height: 1.6;
 }
-h1 {
+
+h1, h2 {
   text-align: center;
-  margin-bottom: 10px;
+  font-family: 'Pacifico', cursive;
+  color: var(--text);
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-in-out;
 }
+
 #auth-section {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 #auth-section button {
-  margin: 0 10px;
-  padding: 8px 15px;
+  padding: 10px 20px;
+  background-color: var(--highlight);
+  color: var(--text);
   border: none;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 4px;
+  border-radius: 30px;
   cursor: pointer;
   font-size: 16px;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 #auth-section button:hover {
-  background-color: #0056b3;
+  background-color: var(--hover);
+  transform: scale(1.05);
 }
+
 #visites {
   text-align: center;
-  font-size: 20px;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 22px;
   font-weight: bold;
+  color: var(--accent);
+  margin: 30px 0;
+  animation: fadeIn 1.5s ease;
 }
-h2 {
-  margin-top: 30px;
-  text-align: center;
-  color: #222;
-}
+
 #messages, #commandes {
-  max-height: 400px;
+  max-width: 1000px;
+  margin: 30px auto;
+  padding: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
   overflow-y: auto;
-  padding: 10px;
-  margin-bottom: 30px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  animation: pulse 4s infinite;
+  animation: slideIn 1s ease-out;
 }
-@keyframes pulse {
-  0% { box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-  50% { box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
-  100% { box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
-}
+
 .message, .order {
-  background: #fff;
-  margin-bottom: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background: var(--bg);
+  margin-bottom: 15px;
+  padding: 15px 20px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  transition: background 0.3s;
 }
+.message:hover, .order:hover {
+  background: var(--hover);
+}
+
 .message h3, .order h3 {
-  margin: 0 0 5px 0;
-  font-size: 16px;
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: var(--text);
 }
 .message p, .order p {
   margin: 5px 0;
+  color: var(--accent);
 }
 .message small, .order small {
-  display: block;
-  margin-top: 5px;
   font-size: 12px;
-  color: #555;
+  color: #aaa;
 }
+
 button.delete-btn {
   float: right;
   background: transparent;
   border: none;
-  cursor: pointer;
-  font-size: 14px;
+  font-size: 18px;
   color: red;
+  cursor: pointer;
 }
 
 #fileList {
-    margin-top: 20px;
+  max-width: 900px;
+  margin: 30px auto;
 }
 
 .file-item {
-    margin-bottom: 15px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+  background: var(--card-bg);
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  margin-bottom: 15px;
+  transition: background 0.3s;
+}
+.file-item:hover {
+  background: var(--hover);
 }
 
 .file-item a {
-    color: #007bff;
-    text-decoration: none;
+  color: #0af;
+  text-decoration: none;
+  font-weight: bold;
 }
-
 .file-item a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-h1, h2, .upload-label {
-  font-family: 'Pacifico', cursive;
+footer {
+  background-color: #000;
+  padding: 40px 20px;
+  color: #fff;
+  text-align: center;
+  font-size: 15px;
 }
 
+footer a {
+  color: #fff;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+footer a:hover {
+  color: #aaa;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(-20px);}
+  to {opacity: 1; transform: translateY(0);}
+}
+
+@keyframes slideIn {
+  from {opacity: 0; transform: translateX(-30px);}
+  to {opacity: 1; transform: translateX(0);}
+}
 
 </style>
 </head>
@@ -132,7 +180,9 @@ h1, h2, .upload-label {
         <li><a href="index.html">Accueil</a></li>
         <li><a href="catalog.html">Catalogue</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="presentation.html">Sign up/Sign in</a></li>
+        <li><a href="presentation.html" class="join-btn" target="_blank">
+  🤝 Notre communauté
+</a></li>
       </ul>
     </nav>
     <!-- Menu burger pour mobile -->

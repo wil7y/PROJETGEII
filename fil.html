@@ -268,7 +268,7 @@ main {
 <main>
 
   <form id="newPostForm">
-    <textarea id="postText" placeholder="Exprimez vous ?" required></textarea>
+    <textarea id="postText" placeholder="Exprimez vous &#128512;" required></textarea>
     <input type="file" id="postImage" accept="image/*" />
     <button type="submit">Publier</button>
   </form>
@@ -279,6 +279,8 @@ main {
   <div class="post" id="post-${postId}">
   <!-- contenu du post ici -->
 </div>
+
+
 
 
 </main>
@@ -390,6 +392,14 @@ db.collection('users').doc(postData.userId).get().then(userDoc => {
         ❤️ <span class="like-count">${postData.reactionsCount?.like || 0}</span>
       </div>
     </div>
+    
+<div class="comment-section">
+  <div class="comment-list" id="comments-${postId}">Chargement commentaires...</div>
+  <div class="add-comment">
+    <input type="text" id="comment-input-${postId}" placeholder="Ajouter un commentaire..." />
+    <button onclick="submitComment('${postId}')">Envoyer</button>
+  </div>
+</div>
   `;
 
   // Gestion du like
@@ -398,6 +408,8 @@ db.collection('users').doc(postData.userId).get().then(userDoc => {
   checkIfLiked(postId).then(liked => {
     if(liked) likeBtn.classList.add('liked');
   });
+
+  loadComments(postId);
 });
 
 return div;
@@ -532,7 +544,87 @@ const userName = userDoc.exists ? userDoc.data().username : 'User';
         loadPosts();
       }
     });
-    
+ 
+function loadComments(postId) {
+  const commentList = document.getElementById(`comments-${postId}`);
+  db.collection('posts').doc(postId).collection('comments')
+    .orderBy('createdAt')
+    .onSnapshot(snapshot => {
+      commentList.innerHTML = ''; // Clear comments before reload
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+
+        // Création du conteneur commentaire
+        const commentDiv = document.createElement('div');
+        commentDiv.className = 'comment';
+
+        // Avatar (remplace par URL avatar si dispo sinon avatar générique)
+        const avatarUrl =  '' || '' + encodeURIComponent(data.username);
+
+        const usernameColor = getRandomColor();
+
+commentDiv.innerHTML = `
+  <div class="comment-content">
+    <div class="comment-header">
+      <span class="comment-username" style="color: ${usernameColor}; font-weight:bold;">
+        ${escapeHtml(data.username || 'Utilisateur')}
+      </span>
+      <span class="comment-date" style="color:#8a8d91; font-size:12px;">
+        ${formatDate(data.createdAt)}
+      </span>
+    </div>
+    <div class="comment-text">${escapeHtml(data.text)}</div>
+    <div class="comment-actions"></div>
+  </div>
+`;
+
+
+        commentList.appendChild(commentDiv);
+      });
+    });
+}
+
+function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+
+
+async function submitComment(postId) {
+  if (!currentUser) {
+    alert("Connectez-vous pour commenter.");
+    return;
+  }
+
+  const input = document.getElementById(`comment-input-${postId}`);
+  const text = input.value.trim();
+  if (!text) return;
+
+  const userDoc = await db.collection('users').doc(currentUser.uid).get();
+  const username = userDoc.exists ? userDoc.data().username : 'Utilisateur';
+
+  await db.collection('posts').doc(postId).collection('comments').add({
+    userId: currentUser.uid,
+    username: username,
+    text: text,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  // (Optionnel) incrémenter compteur de commentaires
+  await db.collection('posts').doc(postId).update({
+    commentsCount: firebase.firestore.FieldValue.increment(1)
+  });
+
+  input.value = '';
+}
+
+
 </script>
 
 </body>
