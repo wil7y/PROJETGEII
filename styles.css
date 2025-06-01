@@ -509,7 +509,7 @@ footer a:hover {
 }
 
 .horizontal-team {
-  padding: 40px 20px;
+  padding: 60px 40px;
   background: #f0f8ff;
   text-align: center;
   overflow: hidden;
@@ -522,7 +522,7 @@ footer a:hover {
 }
 
 .carousel-wrapper {
-  width: 710%;
+  width: 1710%;
   overflow: hidden;
   position: relative;
   height: 210px;
@@ -530,8 +530,8 @@ footer a:hover {
 
 .team-carousel {
   display: flex;
-  gap: 20px;
-  animation: scrollLinear 40s linear infinite;
+  gap: 30px;
+  animation: scrollLinear 60s linear infinite;
 }
 
 /* Responsive */
@@ -545,11 +545,11 @@ footer a:hover {
 
   .carousel-wrapper {
     padding: 50px 0;
-    width: 2700%;
+    width: 6800%;
     height: 300px;
   }
   .team-carousel {
-    animation: scrollLinear 50s linear infinite;
+    animation: scrollLinear 80s linear infinite;
   }
 }
 @keyframes scrollLinear {
@@ -753,3 +753,104 @@ form button[type="submit"] {
     font-size: 14px;
   }
 }
+
+.comment {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInComment 0.3s ease-out forwards;
+  transition: background-color 0.2s;
+}
+
+.comment:hover {
+  background-color: #f0f2f5;
+}
+
+.comment-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.comment-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-header {
+  background-color: #f0f2f5;
+  padding: 8px 12px;
+  border-radius: 12px;
+  word-break: break-word;
+}
+
+.comment-username {
+  font-weight: 600;
+  color: #050505;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.comment-text {
+  color: #050505;
+  display: inline;
+}
+
+.comment-actions {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #65676b;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.comment-actions span {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.comment-actions span:hover {
+  text-decoration: underline;
+  color: #1877f2;
+}
+
+/* ✨ Animation à l’apparition */
+@keyframes fadeInComment {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsive pour mobile */
+@media (max-width: 480px) {
+  .comment {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .comment-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .comment-header {
+    padding: 6px 10px;
+  }
+
+  .comment-actions {
+    font-size: 12px;
+  }
+}
+
