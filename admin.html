@@ -4,67 +4,109 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Page Administrateur</title>
+<!-- Feuilles de style externes -->
 <link rel="stylesheet" href="styles.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-<link rel="icon" href="logo.png" type="image/png">
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="icon" href="logo.png" type="image/png" />
+<!-- Police Google -->
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
 
 <style>
-:root {
-  --bg: #000;
-  --text: #fff;
-  --accent: #555;
-  --card-bg: #111;
-  --card-border: #222;
-  --hover: #1a1a1a;
-  --highlight: #333;
-}
+  /* Variables de couleurs */
+  :root {
+    --bg: #000;
+    --text: #fff;
+    --accent: #555;
+    --card-bg: #111;
+    --card-border: #222;
+    --hover: #1a1a1a;
+    --highlight: #555;
+  }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  margin: 0;
-  padding: 40px 20px;
-  line-height: 1.6;
-}
+  /* Reset global */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
 
-h1, h2 {
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 40px 20px;
+    line-height: 1.6;
+  }
+
+  h1, h2 {
+    text-align: center;
+    font-family: 'Pacifico', cursive;
+    color: var(--text);
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  /* En-tête avec menu responsive */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--accent);
+  }
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+  }
+  .logo {
+    height: 60px;
+    width: auto;
+  }
+
+  /* Menu navigation */
+  .nav-menu ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-menu a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .nav-menu a:hover {
+    color: #aaa;
+  }
+
+  /* Menu burger pour mobile */
+  .burger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    width: 30px;
+    height: 25px;
+    justify-content: space-between;
+  }
+  .burger div {
+    height: 4px;
+    background-color: var(--text);
+    border-radius: 2px;
+  }
+
+  /* Styles pour sections */
+#visites, #messages, #commandes {
   text-align: center;
-  font-family: 'Pacifico', cursive;
-  color: var(--text);
-  margin-bottom: 20px;
-  animation: fadeIn 1s ease-in-out;
-}
-
-#auth-section {
-  text-align: center;
-  margin-bottom: 30px;
-}
-#auth-section button {
-  padding: 10px 20px;
-  background-color: var(--highlight);
-  color: var(--text);
-  border: none;
-  border-radius: 30px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background 0.3s, transform 0.3s;
-}
-#auth-section button:hover {
-  background-color: var(--hover);
-  transform: scale(1.05);
-}
-
-#visites {
-  text-align: center;
-  font-size: 22px;
-  font-weight: bold;
-  color: var(--accent);
   margin: 30px 0;
   animation: fadeIn 1.5s ease;
 }
-
+#visites {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--accent);
+}
 #messages, #commandes {
   max-width: 1000px;
   margin: 30px auto;
@@ -74,9 +116,9 @@ h1, h2 {
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
   overflow-y: auto;
-  animation: slideIn 1s ease-out;
 }
 
+/* Messages et commandes */
 .message, .order {
   background: var(--bg);
   margin-bottom: 15px;
@@ -88,7 +130,6 @@ h1, h2 {
 .message:hover, .order:hover {
   background: var(--hover);
 }
-
 .message h3, .order h3 {
   font-size: 18px;
   margin-bottom: 5px;
@@ -103,20 +144,11 @@ h1, h2 {
   color: #aaa;
 }
 
-button.delete-btn {
-  float: right;
-  background: transparent;
-  border: none;
-  font-size: 18px;
-  color: red;
-  cursor: pointer;
-}
-
+/* Gestion fichiers */
 #fileList {
   max-width: 900px;
   margin: 30px auto;
 }
-
 .file-item {
   background: var(--card-bg);
   padding: 15px;
@@ -128,7 +160,6 @@ button.delete-btn {
 .file-item:hover {
   background: var(--hover);
 }
-
 .file-item a {
   color: #0af;
   text-decoration: none;
@@ -138,6 +169,7 @@ button.delete-btn {
   text-decoration: underline;
 }
 
+/* Pied de page */
 footer {
   background-color: #000;
   padding: 40px 20px;
@@ -145,7 +177,6 @@ footer {
   text-align: center;
   font-size: 15px;
 }
-
 footer a {
   color: #fff;
   margin: 0 15px;
@@ -162,43 +193,58 @@ footer a:hover {
   from {opacity: 0; transform: translateY(-20px);}
   to {opacity: 1; transform: translateY(0);}
 }
-
 @keyframes slideIn {
   from {opacity: 0; transform: translateX(-30px);}
   to {opacity: 1; transform: translateX(0);}
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .nav-menu {
+    display: none;
+    width: 100%;
+  }
+  .nav-menu.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .burger {
+    display: flex;
+  }
+}
 </style>
 </head>
 <body>
-  <header>
-    <div class="logo-container">
-      <img src="logo.jpg"  class="logo" />
-    </div>
-    <nav class="nav-menu">
-      <ul>
-        <li><a href="index.html">Accueil</a></li>
-        <li><a href="catalog.html">Catalogue</a></li>
-        <li><a href="contact.html">Contact</a></li>
-        <li><a href="presentation.html" class="join-btn" target="_blank">
-  🤝 Notre communauté
-</a></li>
-      </ul>
-    </nav>
-    <!-- Menu burger pour mobile -->
-    <div class="burger" id="burger">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </header>
 
+<header>
+  <div class="logo-container">
+    <img src="logo.jpg" alt="Logo" class="logo" />
+  </div>
+  <nav class="nav-menu" id="menu">
+    <ul>
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="catalog.html">Catalogue</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="presentation.html" class="join-btn" target="_blank">🤝 Notre communauté</a></li>
+    </ul>
+  </nav>
+  <!-- Menu burger -->
+  <div class="burger" id="burger" role="button" aria-label="Menu" aria-expanded="false" aria-controls="menu" tabindex="0">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</header>
 
 <h1>Page Administrateur</h1>
 
-
-
-<div id="visites">📊Chargement du nombre de visiteurs...</div>
+<div id="visites">📊 Chargement du nombre de visiteurs...</div>
 <div>.</div>
 <div>.</div>
 
@@ -210,10 +256,12 @@ footer a:hover {
 <h2>📁 Commandes</h2>
 <div id="commandes">Chargement...</div>
 
-<h2> Gestion des fichiers</h2>
-    <div id="fileList">
-        <!-- Les fichiers seront affichés ici -->
-    </div>
+<h2>Gestion des fichiers</h2>
+<div id="fileList">
+  <!-- Fichiers affichés ici -->
+</div>
+
+
 <script src="main.js"></script>
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js';
@@ -223,116 +271,149 @@ import { getFirestore, collection, getDocs, query, where, orderBy, deleteDoc, do
 // CONFIG Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBg5mXXkRDWqD9a3l8h1Y_CFNy31yCHQ-Y",
-    authDomain: "cnc2-bca09.firebaseapp.com",
-    projectId: "cnc2-bca09",
-    storageBucket: "cnc2-bca09.firebasestorage.app",
-    messagingSenderId: "680616207738",
-    appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
-    measurementId: "G-RGD9YN5HNS"
+  authDomain: "cnc2-bca09.firebaseapp.com",
+  projectId: "cnc2-bca09",
+  storageBucket: "cnc2-bca09.firebasestorage.app",
+  messagingSenderId: "680616207738",
+  appId: "1:680616207738:web:12be3b4734cb72c162e2c3",
+  measurementId: "G-RGD9YN5HNS"
 };
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const adminEmail = "admin@example.com"; // Modifier ici
 
-// Boutons
-const btnLogin = document.getElementById('btn-login');
-const btnLogout = document.getElementById('btn-logout');
-
-
-
-// Charger le nombre de visiteurs du jour
+// Chargement du nombre de visiteurs
 async function loadVisiteurs() {
-  const today = new Date(); today.setHours(0,0,0,0);
-  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() +1);
-  const q = query(collection(db, 'visites'), where('date', '>=', today), where('date', '<', tomorrow));
-  const snapshot = await getDocs(q);
-  document.getElementById('visites').innerText = `Visiteurs aujourd'hui : ${snapshot.size}`;
+  try {
+    const today = new Date(); today.setHours(0,0,0,0);
+    const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+    const q = query(collection(db, 'visites'), where('date', '>=', today), where('date', '<', tomorrow));
+    const snapshot = await getDocs(q);
+    document.getElementById('visites').innerText = `Visiteurs aujourd'hui : ${snapshot.size}`;
+  } catch (error) {
+    console.error("Erreur lors du chargement des visiteurs:", error);
+    document.getElementById('visites').innerText = `Erreur de chargement`;
+  }
 }
 
 // Enregistrer une visite
 async function enregistrerVisite() {
-  const now = new Date();
-  await addDoc(collection(db, 'visites'), {
-    date: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-    timestamp: now
-  });
+  try {
+    const now = new Date();
+    await addDoc(collection(db, 'visites'), {
+      date: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+      timestamp: now
+    });
+  } catch (error) {
+    console.error("Erreur lors de l'enregistrement de la visite:", error);
+  }
 }
 
-// Charger messages de contact
+// Charger et afficher messages
 async function loadMessages() {
-  await enregistrerVisite();
-  const q = query(collection(db, 'messages_contact'), orderBy('timestamp', 'asc'));
-  onSnapshot(q, (snap) => {
-    let html = '';
-    snap.forEach(d => {
-      const m = d.data();
-      const dateStr = new Date(m.timestamp.seconds*1000).toLocaleString();
-      html += `
-        <div class="message">
-          <h3>${m.name} (${m.email})</h3>
-          <button class="delete-btn" data-id="${d.id}">🗑️</button>
-          <p>${m.message}</p>
-          <small>Envoyé le: ${dateStr}</small>
+  try {
+    await enregistrerVisite();
+    const q = query(collection(db, 'messages_contact'), orderBy('timestamp', 'asc'));
+    onSnapshot(q, (snap) => {
+      let html = '';
+      snap.forEach(d => {
+        const m = d.data();
+        const dateStr = new Date(m.timestamp.seconds*1000).toLocaleString();
+        html += `
+          <div class="message">
+            <h3>${m.name} (${m.email})</h3>
+            <button class="delete-btn" data-id="${d.id}">🗑️</button>
+            <p>${m.message}</p>
+            <small>Envoyé le: ${dateStr}</small>
+          </div>
+        `;
+      });
+      document.getElementById('messages').innerHTML = html || 'Aucun message.';
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.onclick = async () => {
+          if (confirm("Voulez-vous vraiment supprimer ce message ?")) {
+            try {
+              await deleteDoc(doc(db, 'messages_contact', btn.dataset.id));
+            } catch (err) {
+              alert("Erreur lors de la suppression");
+            }
+          }
+        };
+      });
+    });
+  } catch (error) {
+    console.error("Erreur lors du chargement des messages:", error);
+  }
+}
+
+// Charger commandes
+async function loadCommandes() {
+  try {
+    const snapshot = await getDocs(collection(db, 'commandes'));
+    const container = document.getElementById('commandes');
+    container.innerHTML = '';
+    snapshot.forEach(d => {
+      const c = d.data();
+      container.innerHTML += `
+        <div class="order">
+          <strong>Service:</strong> ${c.service}<br>
+          <strong>Nom:</strong> ${c.nom}<br>
+          <strong>Email:</strong> ${c.email}<br>
+          <strong>Date livraison:</strong> ${c.dateLivraison}<br>
+          <strong>Quantité:</strong> ${c.quantite}<br>
+          <strong>Description:</strong> ${c.description}<br>
+          <strong>Dimensionnement:</strong> ${c.dimensionnement}<br>
+          <strong>Date commande:</strong> ${c.dateCommande ? new Date(c.dateCommande.seconds*1000).toLocaleString() : ''}<br>
+          <button onclick="deleteCommande('${d.id}')">Supprimer</button>
         </div>
       `;
     });
-    document.getElementById('messages').innerHTML = html || 'Aucun message.';
-    document.querySelectorAll('.delete-btn').forEach(btn => {
-      btn.onclick = () => {
-        deleteDoc(doc(db, 'messages_contact', btn.dataset.id));
-      };
-    });
-  });
+  } catch (error) {
+    console.error("Erreur lors du chargement des commandes:", error);
+  }
 }
-// Charger commandes
-async function loadCommandes() {
-  const snapshot = await getDocs(collection(db, 'commandes'));
-  const container = document.getElementById('commandes');
-  container.innerHTML = '';
-  snapshot.forEach(d => {
-    const c = d.data();
-    container.innerHTML += `
-      <div class="order">
-        <strong>Service:</strong> ${c.service}<br>
-        <strong>Nom:</strong> ${c.nom}<br>
-        <strong>Email:</strong> ${c.email}<br>
-        <strong>Date livraison:</strong> ${c.dateLivraison}<br>
-        <strong>Quantité:</strong> ${c.quantite}<br>
-        <strong>Description:</strong> ${c.description}<br>
-        <strong>Dimensionnement:</strong> ${c.dimensionnement}<br>
-        <strong>Date commande:</strong> ${c.dateCommande ? new Date(c.dateCommande.seconds*1000).toLocaleString() : ''}<br>
-        <button onclick="deleteCommande('${d.id}')">Supprimer</button>
-      </div>
-    `;
-  });
-}
-
 window.deleteCommande = async (id) => {
-  await deleteDoc(doc(db, 'commandes', id));
-
+  if (confirm("Confirmez la suppression de cette commande")) {
+    try {
+      await deleteDoc(doc(db, 'commandes', id));
+    } catch (error) {
+      alert("Erreur lors de la suppression");
+    }
+  }
 };
 loadCommandes();
+loadVisiteurs();
+loadMessages();
 
+// Charger fichiers
 async function getFiles() {
-            const querySnapshot = await getDocs(collection(db, "fichiers"));
-            const fileList = document.getElementById("fileList");
+  try {
+    const querySnapshot = await getDocs(collection(db, "fichiers"));
+    const fileList = document.getElementById("fileList");
+    fileList.innerHTML = ''; // Clear existing
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const fileUrl = data.fileUrl;
+      const fileName = doc.id; // Utilise ID comme nom
+      const fileItem = document.createElement('div');
+      fileItem.className = 'file-item';
+      fileItem.innerHTML = `
+        <p>Nom du fichier: ${fileName}</p>
+        <a href="${fileUrl}" target="_blank">Télécharger le fichier</a>
+      `;
+      fileList.appendChild(fileItem);
+    });
+  } catch (error) {
+    console.error("Erreur lors du chargement des fichiers:", error);
+  }
+  
+}
+// Charger fichiers à l'initialisation
+window.onload = getFiles;
 
-            querySnapshot.forEach((doc) => {
-                const fileUrl = doc.data().fileUrl;
-                const fileName = doc.id; // Utilisation de l'ID du document comme nom du fichier
-                const fileItem = document.createElement('div');
-                fileItem.classList.add('file-item');
-                fileItem.innerHTML = `
-                    <p>Nom du fichier: ${fileName}</p>
-                    <a href="${fileUrl}" target="_blank">Télécharger le fichier</a>
-                `;
-                fileList.appendChild(fileItem);
-            });
-        }
-
-        // Charger les fichiers à l'initialisation
-        window.onload = getFiles;
+// Si tu veux sécuriser l'accès, pense à ajouter une authentification Firebase
+// et à vérifier l'utilisateur avant d'exécuter ces fonctions.
 </script>
 <footer style="background-color:#000; padding:30px 20px; color:#fff; text-align:center;">
   <div style="max-width:1200px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-around; align-items:center;">
